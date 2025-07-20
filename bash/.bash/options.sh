@@ -1,0 +1,6 @@
+# completion
+set completion-ignore-case on
+set show-all-if-ambiguous on
+TAB: menu-complete
+# vi mode
+set -o vi

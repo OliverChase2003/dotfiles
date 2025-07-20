@@ -1,0 +1,25 @@
+[user]
+    name = OliverChase2003
+    email = oliverchase5408@gmail.com
+
+[alias]
+    st = status
+    co = checkout
+	br = branch
+
+[init]
+	defaultBranch = main
+
+# proxy
+[http]
+    proxy = http://127.0.0.1:7897       ## clash-verge
+[https]
+	proxy = https://127.0.0.1:7897      ## clash-verge
+
+## github cli
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
