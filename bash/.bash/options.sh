@@ -1,6 +1,6 @@
-# completion
-set completion-ignore-case on
-set show-all-if-ambiguous on
-TAB: menu-complete
-# vi mode
+# auto cd
+shopt -s autocd
+# extglob
+shopt -s extglob
+# set vi mode
 set -o vi

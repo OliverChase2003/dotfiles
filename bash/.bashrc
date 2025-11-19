@@ -3,7 +3,10 @@ if [ -f /etc/bashrc ]; then
 fi
 
 ## === options === ##
-source $HOME/.bash/env.sh
+source $HOME/.bash/options.sh
+
+## === completes === ##
+source $HOME/.bash/complete.sh
 
 ## === env === ##
 source $HOME/.bash/env.sh
@@ -11,7 +14,6 @@ source $HOME/.bash/env.sh
 ## === prompt === ##
 source $HOME/.bash/prompt.sh
 
-## source $HOME/.ble.sh/out/ble.sh
 ## === functions === ##
 source $HOME/.bash/functions/*.sh
 
