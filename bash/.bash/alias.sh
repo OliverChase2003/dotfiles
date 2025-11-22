@@ -3,13 +3,8 @@ alias l="ls"
 alias ll="ls -l"
 alias la="ls -la"
 # cd
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias hom="cd ~"
-alias dld="cd ~/Downloads/"
-alias doc="cd ~/Documents/"
-alias pic="cd ~/Pictures/"
+alias ...="../.."
+alias ....="../../.."
 # grep
 alias grep="grep --color=auto"
 # clear
