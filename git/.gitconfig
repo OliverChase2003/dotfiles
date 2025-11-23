@@ -16,7 +16,7 @@
 [https]
 	proxy = https://127.0.0.1:7897      ## clash-verge
 
-## github cli
+# github cli
 [credential "https://github.com"]
 	helper = 
 	helper = !/usr/bin/gh auth git-credential
