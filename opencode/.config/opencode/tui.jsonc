@@ -1,0 +1,23 @@
+{
+	"$schema": "https://opencode.ai/tui.json",
+	"theme": "catppuccin",
+	"keybinds": {
+		// leader
+		"leader": "ctrl+x",
+		// input
+		"editor_open": "alt+e",
+		// scroll
+		"messages_line_up": "alt+k",
+		"messages_line_down": "alt+j",
+		"messages_page_up": "alt+u",
+		"messages_page_down": "alt+d",
+		// input
+		"input_backspace": "backspace",
+		"input_delete": "delete",
+		"input_delete_line": "shift+backspace",
+		"input_delete_to_line_start": "ctrl+backspace",
+		"input_delete_to_line_end": "ctrl+shift+backspace",
+		"input_submit": "ctrl+return",
+		"input_newline": "return"
+	}
+}

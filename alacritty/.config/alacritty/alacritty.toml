@@ -1,0 +1,9 @@
+# ~/.config/alacritty/alacritty.toml
+[general]
+import = [
+	"~/.config/alacritty/font.toml",
+	"~/.config/alacritty/window.toml",
+	"~/.config/alacritty/colors.toml",
+	"~/.config/alacritty/input.toml",
+]
+

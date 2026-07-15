@@ -1,0 +1,35 @@
+{
+	"name": "Vimium C",
+	"@time": "2026/6/5 15:15:01",
+	"time": 1780643701956,
+	"environment": {
+		"extension": "2.12.2",
+		"platform": "linux",
+		"chromium": 149
+	},
+	"allBrowserUrls": true,
+	"exclusionRules": [
+		{
+			"passKeys": "",
+			"pattern": ":https://ogs.google.com/"
+		}
+	],
+	"keyLayout": 2,
+	"keyMappings": [
+		"#!no-check",
+		"map H previousTab",
+		"map L nextTab",
+		"map J goBack",
+		"map K goForward",
+		""
+	],
+	"linkHintCharacters": "asdfghjkl",
+	"searchEngines": [
+		"g https://www.google.com/search?q=%s",
+		"b https://www.bing.com/search?q=%s",
+		"d https://duckduckgo.com/?q=%s",
+		""
+	],
+	"searchUrl": "https://www.bing.com/search?q=$s bing",
+	"vimSync": true
+}
