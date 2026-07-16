@@ -1,3 +1,11 @@
+# path
+PATH_ENTRIES=(
+  "$HOME/.local/bin"
+  "$HOME/bin"
+  "$HOME/.local/share/cargo/bin"
+)
+IFS=: eval 'PATH="${PATH_ENTRIES[*]}:$PATH"'
+
 # prompt
 export PS1=' \w \[\e[33m\]\$\[\e[0m\] '
 
