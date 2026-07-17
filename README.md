@@ -2,14 +2,6 @@
 
 ## 配置说明
 
-### alacritty/
-1. 终端: Alacritty
-2. 字体: Literation Mono Nerd Font 17pt
-3. 主题: Catppuccin Mocha
-4. 窗口: 无装饰、启动最大化、20px 内边距
-5. 快捷键: Ctrl+Shift+C/V 复制粘贴, Ctrl+Shift+N 新窗口
-6. 配置拆分: font.toml / window.toml / colors.toml / input.toml
-
 ### bash/
 1. 别名: nvim, yazi, git, cd 等...
 2. 环境变量: path, qt-theme, rust/cargo, nodejs ...

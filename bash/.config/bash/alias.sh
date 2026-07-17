@@ -23,8 +23,9 @@ alias cl="clear"
 alias ff="fastfetch"
 # git
 alias gs="git status"
+alias gd="git diff"
 alias ga="git add"
-alias gc="git commit -m"
+alias gc="git commit"
 alias gp="git pull"
 alias gP="git push"
 alias gb="git branch"
@@ -34,7 +35,6 @@ alias gcb="git checkout -b"
 alias yz="yazi"
 # nvim
 alias vi="~/softwares/appimages/nvim-linux-x86_64.appimage"
-#alias vi='[ -f "$HOME/softwares/appimages/nvim-linux-x86_64.appimage" ] && "$HOME/softwares/appimages/nvim-linux-x86_64.appimage" || nvim'
 # gcc
 alias cc="gcc"
 # python3
