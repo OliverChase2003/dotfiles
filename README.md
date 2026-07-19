@@ -47,12 +47,11 @@
 4. TUI: catppuccin 主题, ctrl+x leader, alt+e 编辑器
 5. 规则: 中文沟通、最小修改、不自动 commit
 
+### rime-wanxiang/
+1. 常规设置：快捷键配置、水平显示候选栏
+
 ### python/
 预留给 pip 配置，当前为空
-
-### rime-wanxiang/
-1. 快捷键配置
-2. 水平显示候选栏
 
 ### rust/
 预留给 Cargo 配置，当前为空
