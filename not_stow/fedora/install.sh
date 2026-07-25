@@ -698,7 +698,7 @@ usage: $0 [options]
           gtk_theme install WhiteSur gtk theme
           qt_theme  install qt theme deps
           font      install fonts (noto/source-han/nerd)
-		  icon		install icon theme (morewaita icon theme)
+          icon		install icon theme (morewaita icon theme)
 
   --apps <appimage|vm|games|vinput>
           appimage   install appimage env (launcher/tool/deploy)

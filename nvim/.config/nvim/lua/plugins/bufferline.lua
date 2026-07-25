@@ -57,3 +57,4 @@ vim.keymap.set('n', '<leader>bx', function()
 	-- if OpencodeStatus == true then return end
 	vim.cmd('bdelete!')
 end, { desc = 'Force delete buffer' })
+vim.keymap.set('n', '<leader>bb', ':e!<CR>', { desc = 'Reload buffer'})

@@ -26,10 +26,5 @@ source $bash_config_dir/alias.sh
 ## functions
 source $bash_config_dir/functions/fzf-bindings.sh
 
-## open tmux automatically
-## tmux alias is in env.sh above, specify the T-mux config path ~/.config/tmux/tmux.conf
-## dont let it above tmux
-if command -v tmux &> /dev/null && [ -n "$PS1" ] && [ -z "$TMUX" ]; then
-  tmux attach || tmux new
-fi
-. "/home/oliver/.local/share/cargo/env"
+## tmux
+source $bash_config_dir/tmux_open.sh
