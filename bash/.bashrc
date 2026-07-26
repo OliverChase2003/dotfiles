@@ -19,7 +19,7 @@ source $bash_config_dir/envs/fzf.sh
 source $bash_config_dir/envs/golang.sh
 source $bash_config_dir/envs/node.sh
 source $bash_config_dir/envs/rust.sh
-
+source $bash_config_dir/envs/pi.sh
 ## alias
 source $bash_config_dir/alias.sh
 

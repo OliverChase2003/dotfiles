@@ -39,5 +39,6 @@ alias vi="~/softwares/appimages/nvim-linux-x86_64.appimage"
 alias cc="gcc"
 # python3
 alias py="python3"
-# esp32
-alias expesp="source ~/.local/share/rustup/toolchains/esp/export-esp.sh"
+# pi agent
+##alias pi="PI_CODING_AGENT_DIR=~/.config/pi/agent PI_CODING_AGENT_SESSION_DIR=~/.config/pi/agent/sessions pi"
+alias pi="pi --continue"
