@@ -1,0 +1,76 @@
+{
+	"permission": {
+		"*": "allow",
+
+		"external_directory": "allow",
+
+		"read": "allow",
+
+		"grep": "allow",
+
+		"find": "allow",
+
+		"write": "ask",
+
+		"edit": {
+			"*": "ask",
+			"*.lock": "deny"
+		},
+
+		"delete": "ask",
+
+		"bash": {
+			"*": "ask",
+
+			"cat *": "allow",
+			"head *": "allow",
+			"tail *": "allow",
+			"less *": "allow",
+			"more *": "allow",
+
+			"ls *": "allow",
+			"tree *": "allow",
+			"stat *": "allow",
+			"file *": "allow",
+			"wc *": "allow",
+			"du *": "allow",
+			"df *": "allow",
+
+			"grep *": "allow",
+			"egrep *": "allow",
+			"fgrep *": "allow",
+			"rg *": "allow",
+			"find *": "allow",
+			"fd *": "allow",
+
+			"diff *": "allow",
+			"cmp *": "allow",
+			"comm *": "allow",
+			"md5sum *": "allow",
+			"sha1sum *": "allow",
+			"sha256sum *": "allow",
+			"cksum *": "allow",
+
+			"pwd": "allow",
+			"whoami": "allow",
+			"id": "allow",
+			"hostname": "allow",
+			"uname *": "allow",
+			"date": "allow",
+			"uptime": "allow",
+			"ps *": "allow",
+			"printenv *": "allow",
+			"which *": "allow",
+			"type *": "allow",
+
+			"git status": "allow",
+			"git diff *": "allow",
+			"git log *": "allow",
+			"git show *": "allow",
+			"git blame *": "allow",
+			"git ls-files *": "allow",
+			"git branch": "allow",
+			"git remote -v": "allow"
+		}
+	}
+}

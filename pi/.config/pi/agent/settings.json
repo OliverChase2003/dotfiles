@@ -1,0 +1,14 @@
+{
+  "lastChangelogVersion": "0.82.1",
+  "theme": "catppuccin-tui-mocha",
+  "defaultProvider": "deepseek",
+  "defaultModel": "deepseek-v4-flash",
+  "defaultThinkingLevel": "high",
+  "packages": [
+    "npm:pi-catppuccin-tui",
+    "npm:@gotgenes/pi-subagents",
+    "npm:@gotgenes/pi-permission-system",
+    "npm:pi-wtf"
+  ],
+  "enableSkillCommands": false
+}

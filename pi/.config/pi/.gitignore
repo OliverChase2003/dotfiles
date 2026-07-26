@@ -1,0 +1,4 @@
+agent/npm/
+agent/auth.json
+agent/models-store.json
+sessions/
