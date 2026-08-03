@@ -1,4 +1,6 @@
 agent/npm/
 agent/auth.json
 agent/models-store.json
+agent/skills/anthropic/
 sessions/
+agent/extensions/pi-permission-system/logs/

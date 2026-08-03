@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.82.1",
+  "lastChangelogVersion": "0.83.0",
   "theme": "catppuccin-tui-mocha",
   "defaultProvider": "deepseek",
   "defaultModel": "deepseek-v4-flash",
@@ -8,7 +8,9 @@
     "npm:pi-catppuccin-tui",
     "npm:@gotgenes/pi-subagents",
     "npm:@gotgenes/pi-permission-system",
-    "npm:pi-wtf"
+    "npm:pi-wtf",
+    "npm:@narumitw/pi-btw",
+    "npm:@narumitw/pi-goal"
   ],
   "enableSkillCommands": false
 }
