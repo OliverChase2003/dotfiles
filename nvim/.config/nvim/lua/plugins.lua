@@ -32,7 +32,7 @@ local function vimpack_setup()
 	require("plugins.bufferline")
 	require("plugins.lualine")
 	-- code
-	require("plugins.treesitter")
+	-- require("plugins.treesitter")
 	require("plugins.mason")
 	require("plugins.lsp")
 	require("plugins.dap")

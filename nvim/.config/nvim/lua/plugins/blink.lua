@@ -23,6 +23,14 @@ local blink_opt = {
 		list = {
 			selection = { preselect = true, auto_insert = false }
 		},
+		menu = {
+			draw = {
+				columns = {
+					{ "label", "label_description", gap = 1 },
+					{ "kind_icon", "kind" }
+				}
+			}
+		}
 	},
 	keymap = {
 		['<C-p>'] = { 'select_prev', 'fallback' },
@@ -36,19 +44,22 @@ local blink_opt = {
 	},
 	sources = {
 		default = { 'lsp', 'path', 'buffer' },
-		per_filetype = {
-			sql = { 'dadbod', 'buffer' }
-		},
-		providers = {
-			dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
-		}
+		-- per_filetype = {
+		-- 	sql = { 'dadbod', 'buffer' }
+		-- },
+		-- providers = {
+		-- 	dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
+		-- }
 	},
 	signature = { enabled = true },
-	fuzzy = { implementation = "lua" },
+	-- fuzzy = { implementation = "lua" },
+	fuzzy = { implementation = "prefer_rust_with_warning" },
 }
 
 local function vimpack_setup_blink()
-	vim.pack.add({ { src = "https://github.com/saghen/blink.cmp" } })
+	vim.pack.add({
+		{ src = 'https://github.com/saghen/blink.cmp', version = 'v1' }
+	})
 
 	vim.api.nvim_create_autocmd({ "InsertEnter", "CmdlineEnter" }, {
 		group = vim.api.nvim_create_augroup("SetupCompletion", { clear = true }),

@@ -1,4 +1,4 @@
-local treesitter_opt = 		{
+local treesitter_opt = {
 	modules = {},
 	ensure_installed = {
 		'lua',
