@@ -42,6 +42,19 @@ local blink_opt = {
 		['<C-D>'] = false, --{ 'hide_documentation' }
 		['<C-space>'] = false -- tmux leader
 	},
+	cmdline = {
+		keymap = {
+			['<C-p>'] = { 'select_prev', 'fallback' },
+			['<C-n>'] = { 'select_next', 'fallback' },
+			['<C-s>'] = { 'show', 'fallback' },
+			['<C-e>'] = { 'hide', 'fallback' },
+			['<Tab>'] = { 'accept', 'fallback' },
+			['<C-d>'] = false,
+			['<C-D>'] = false,
+			['<C-space>'] = false,
+		},
+		completion = { menu = { auto_show = true } },
+	},
 	sources = {
 		default = { 'lsp', 'path', 'buffer' },
 		-- per_filetype = {

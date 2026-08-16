@@ -26,12 +26,12 @@ local masondap_opt = {
 
 		-- python
 		python = function(config)
-			require("dap.debugpy").setup(Dap, config)
+			require("daps.debugpy").setup(Dap, config)
 		end,
 
 		-- c, cpp, rust
 		codelldb = function(config)
-			require("dap.bin").setup(Dap, config)
+			require("daps.bin").setup(Dap, config)
 		end,
 	},
 }

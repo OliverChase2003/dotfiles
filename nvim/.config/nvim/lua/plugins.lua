@@ -49,7 +49,8 @@ local function vimpack_setup()
 	-- csv
 	require("plugins.csvview")
 	-- opencode
-	require("plugins.opencode")
+	-- require("plugins.opencode")
+	require("plugins.pi")
 end
 
 if vim.fn.has("nvim-0.12") == 1 then

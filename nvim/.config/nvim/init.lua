@@ -9,3 +9,6 @@ require('plugins')
 
 -- include keymaps
 require('keymaps')
+
+-- include user commands
+require('usercmds')

@@ -23,7 +23,7 @@ else
 end
 
 -- specify lsp
-require("lsp.lua_ls").setup()
+require("lsps.lua_ls").setup()
 
 -- diagnostic
 vim.diagnostic.config({
