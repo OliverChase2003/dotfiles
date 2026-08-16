@@ -46,14 +46,14 @@ vim.keymap.set('n', '>', '<CMD>BufferLineMoveNext<CR>', { desc = 'Move right' })
 vim.keymap.set('n', '<leader>bd', function()
 	-- ban this keymap while nvim-dap-ui opened
 	if DapuiStatus == true then return end
-	OpencodeStatus = vim.inspect(require('opencode.ui.ui').is_opencode_focused())
-	if OpencodeStatus == true then return end
+	-- OpencodeStatus = vim.inspect(require('opencode.ui.ui').is_opencode_focused())
+	-- if OpencodeStatus == true then return end
 	vim.cmd('bdelete')
 end, { desc = 'Delete buffer' })
 
 vim.keymap.set('n', '<leader>bx', function()
 	if DapuiStatus == true then return end
-	OpencodeStatus = vim.inspect(require('opencode.ui.ui').is_opencode_focused())
-	if OpencodeStatus == true then return end
+	-- OpencodeStatus = vim.inspect(require('opencode.ui.ui').is_opencode_focused())
+	-- if OpencodeStatus == true then return end
 	vim.cmd('bdelete!')
 end, { desc = 'Force delete buffer' })
