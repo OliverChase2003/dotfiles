@@ -34,7 +34,7 @@ alias gcb="git checkout -b"
 # yazi
 alias yz="yazi"
 # nvim
-alias vi="~/softwares/appimages/nvim-linux-x86_64.appimage"
+alias vi="LANG=en_US.UTF-8 nvim"
 # gcc
 alias cc="gcc"
 # python3

@@ -32,3 +32,4 @@ source $bash_config_dir/functions/fzf-bindings.sh
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [ -z "$TMUX" ]; then
   tmux attach || tmux new
 fi
+. "/home/oliver/.local/share/cargo/env"

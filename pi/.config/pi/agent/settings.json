@@ -1,16 +1,17 @@
 {
-  "lastChangelogVersion": "0.83.0",
+  "lastChangelogVersion": "0.84.2",
   "theme": "catppuccin-tui-mocha",
   "defaultProvider": "deepseek",
   "defaultModel": "deepseek-v4-flash",
   "defaultThinkingLevel": "high",
+  "externalEditor": "nvim",
   "packages": [
     "npm:pi-catppuccin-tui",
     "npm:@gotgenes/pi-subagents",
     "npm:@gotgenes/pi-permission-system",
     "npm:pi-wtf",
     "npm:@narumitw/pi-btw",
-    "npm:@narumitw/pi-goal"
+    "npm:pi-nvim-bridge"
   ],
   "enableSkillCommands": false
 }
