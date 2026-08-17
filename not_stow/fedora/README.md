@@ -1,6 +1,6 @@
 # Fedora Install
 
-## dir
+## user
 - create xdg style based dir
 ## source
 - tsinghua && ustc
@@ -12,8 +12,8 @@
 - driver: akmod sign && nvidia driver
 
 ## desktop
-- fonts: nerd fonts && cjk fonts
 - gnome: desktop && extensions && gtk/qt themes
+- fonts: nerd fonts && cjk fonts
 
 ## apps
 - appiamges: appimage_launcher
