@@ -7,6 +7,21 @@ BIN=$HOME/.local/bin/
 APPS=$HOME/.local/share/apps/
 APPIMAGES=$HOME/.local/share/appimages/
 
+## user 
+## ./install.sh --user dir
+config_usr_dir() {
+	mkdir -p \
+		$HOME/downloads/ \
+		$HOME/documents/ \
+		$HOME/pictures/ \
+		$HOME/music/ \
+		$HOME/videos/ \
+		$HOME/.config/ \
+		$HOME/.local/ \
+		$HOME/.cache/
+
+}
+
 ## dnf source
 install_rpmfusion() {
 	if [ ! -f /etc/yum.repos.d/rpmfusion-free.repo ]; then
@@ -72,7 +87,6 @@ add_ustc_source() {
 	done
 }
 
-# tsinghua-<name>.bak -> <name>
 ## ./install.sh --source tsinghua 
 change_tsinghua_source() {
 	for f in /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/rpmfusion*.repo; do
@@ -81,7 +95,6 @@ change_tsinghua_source() {
 	done
 }
 
-# ustc-<name>.bak -> <name>
 ## ./install.sh --source ustc 
 change_ustc_source() {
 	for f in /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/rpmfusion*.repo; do
@@ -90,7 +103,6 @@ change_ustc_source() {
 	done
 }
 
-# origin-<name>.bak -> <name>
 ## ./install.sh --source origin
 change_origin_source() {
 	for f in /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/rpmfusion*.repo; do
@@ -401,6 +413,7 @@ install_games_env() {
 }
 
 install_just_talk() {
+	:
 	## download the just-talk-go bin to ~/.local/bin/
 
 	## unzip to ~/.local/bin -> ~/.local/bin/just-talk
@@ -439,6 +452,9 @@ usage: $0 [options]
           tsinghua  switch to tsinghua mirror
           ustc      switch to ustc mirror
           origin    restore origin source
+
+  --user <dir>
+          dir       create user directories (~/downloads, ~/documents, ...)
 EOF
 }
 
@@ -452,6 +468,16 @@ main() {
 				origin)   change_origin_source ;;
 				*)
 					echo "error: unknown source '${2:-}'" >&2
+					usage
+					exit 1
+					;;
+			esac
+			;;
+		--user)
+			case "${2:-}" in
+				dir) config_usr_dir ;;
+				*)
+					echo "error: unknown user option '${2:-}'" >&2
 					usage
 					exit 1
 					;;
