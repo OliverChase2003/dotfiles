@@ -24,5 +24,3 @@
 ## todo
 - gnome extension install
 - gnome theme install
-- get files from github release
-- 

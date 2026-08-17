@@ -1,25 +1,50 @@
 #!/usr/bin/env bash
 
 ## dir variable
+DESKTOP=$HOME/desktop
 DOWNLOAD=$HOME/downloads/
 DOCUMENT=$HOME/documents/
+TEMPLATES=$HOME/documents/templates/
+PUBLIC=$HOME/documents/public/
+MUSIC=$HOME/music/
+PICTURES=$HOME/pictures/
+VIDEOS=$HOME/videos/
+
 BIN=$HOME/.local/bin/
 APPS=$HOME/.local/share/apps/
 APPIMAGES=$HOME/.local/share/appimages/
 
 ## user 
 ## ./install.sh --user dir
+make_user_dirs() {
+	## generate xdg user dirs config
+	cat > "$HOME/.config/user-dirs.dirs" <<EOF
+XDG_DESKTOP_DIR="${DESKTOP%/}"
+XDG_DOWNLOAD_DIR="${DOWNLOAD%/}"
+XDG_TEMPLATES_DIR="${TEMPLATES%/}"
+XDG_PUBLICSHARE_DIR="${PUBLIC%/}"
+XDG_DOCUMENTS_DIR="${DOCUMENT%/}"
+XDG_MUSIC_DIR="${MUSIC%/}"
+XDG_PICTURES_DIR="${PICTURES%/}"
+XDG_VIDEOS_DIR="${VIDEOS%/}"
+EOF
+}
+
 config_usr_dir() {
 	mkdir -p \
-		$HOME/downloads/ \
-		$HOME/documents/ \
-		$HOME/pictures/ \
-		$HOME/music/ \
-		$HOME/videos/ \
+		$DESKTOP \
+		$DOWNLOAD \
+		$DOCUMENT \
+		$TEMPLATES \
+		$PUBLIC \
+		$MUSIC \
+		$PICTURES \
+		$VIDEOS \
 		$HOME/.config/ \
 		$HOME/.local/ \
 		$HOME/.cache/
 
+	make_user_dirs 
 }
 
 ## dnf source
@@ -225,6 +250,12 @@ sb_sign_akmod() {
 }
 
 check_dkms_signed() {
+	if ! check_sb; then
+		echo "secure boot disabled, no need to sign akmod"
+		return 0
+	fi
+
+	## add dkms check here
 	return 1
 }
 
@@ -335,12 +366,110 @@ install_gnome_desktop() {
 
 ## ./install.sh --desktop gext
 install_gext() {
-	## check gnome status, if gnome is off, return
-	
 	## install gext
 	pip install gnome-extensions-cli
 
 	## install extensions
+}
+
+whitesurgtk_url="https://github.com/vinceliuice/WhiteSur-gtk-theme.git"
+theme="WhiteSur-gtk-theme"
+theme_dir="$HOME/.local/share/themes/"
+install_gtk_theme() {
+	git clone "${whitesurgtk_url}" "$APPS/$theme" --depth 1
+	chmod +x "$APPS/$theme/install.sh"
+	chmod +x "$APPS/$theme/tweaks.sh"
+
+	sh "$software_dir/$theme/install.sh" \
+		--dest $theme_dir \
+		--opacity normal \
+		--color light \
+		--nautilus glassy \
+		--libadwaita \
+		--shell -i fedora -b default -p 60 -h bigger -normal \
+		--round --darker
+}
+
+update_gtk_theme() {
+	cd "$software_dir/$theme" || exit 1
+	git pull
+	sh "$software_dir/$theme/install.sh" \
+		--dest $theme_dir \
+		--opacity normal \
+		--color light \
+		--nautilus glassy \
+		--libadwaita \
+		--shell -i fedora -b default -p 60 -h bigger -normal \
+		--round --darker
+
+}
+
+## ./install.sh --desktop gtk_theme
+gtk_theme() {
+	if [ -d "$APPS/$theme" ]; then
+		install_gtk_theme 
+	else
+		update_gtk_theme 
+	fi
+}
+
+## ./install.sh --desktop qt_theme
+install_qt_theme_deps() {
+	sudo dnf install -y \
+		wayland-devel
+
+	sudo dnf install -y \
+		qt5-qtbase-devel \
+		qt5-qtsvg-devel \
+		qt5-qtwayland-devel \
+		qt5-qtbase-devel \
+		qt5-qtbase-static \
+		qt5-qtbase-private-devel \
+		qt5ct
+
+	sudo dnf install -y \
+		qt6-qtbase-devel \
+		qt6-qtsvg-devel \
+		qt6-qtwayland-devel \
+		qt6-qtbase-devel \
+		qt6-qtbase-static \
+		qt6-qtbase-private-devel \
+		qt6ct
+}
+
+qt_theme_build() {
+	cd "$software_dir/$theme" || exit 1
+
+	rm -rf build/
+	## modify decoration size and look
+	sed -i.bak \
+		-e 's|^static constexpr int ceButtonSpacing = 6;|static constexpr int ceButtonSpacing = 8;|' \
+		-e 's|^static constexpr int ceButtonMarginRight = 15;|static constexpr int ceButtonMarginRight = 11;|' \
+		-e 's|^static constexpr int ceTitlebarHeight = 38;|static constexpr int ceTitlebarHeight = 32;|' \
+		./src/qwhitesurgtkdecorations.cpp
+
+	## compile QT5 version and install
+	mkdir build && cd build
+	cmake -DHAS_QT6_SUPPORT=true .. && make
+	sudo cp src/libqwhitesurgtkdecorations.so \
+		/usr/lib64/qt5/plugins/wayland-decoration-client/
+	cd .. && rm build -rf
+
+	## compile QT6 version and install
+	mkdir build && cd build
+	cmake -DUSE_QT6=true -DHAS_QT6_SUPPORT=true .. && make
+	sudo cp src/libqwhitesurgtkdecorations.so \
+		/usr/lib64/qt6/plugins/wayland-decoration-client/
+	cd .. && rm build -rf
+}
+
+install_qt_theme() {
+	install_qt_theme_deps 
+}
+
+update_qt_theme() {
+	install_qt_theme_deps 
+	
 }
 
 ## ./install.sh --desktop font
@@ -364,38 +493,65 @@ install_fonts() {
 
 ## apps
 get_release_from_github() {
-	:
+	## param0: repo name -> TheAssassin/AppImageLauncher
+	## param1: output-dir -> $DOWNLOAD / $APPS / $APPIMAGES
+	## param2~...: select word -> x86_64 / .rpm ...
+	local repo=$1
+	local output_dir=$2
+	shift 2
+
+	## build jq filter: every select word must match asset name
+	local args=()
+	local filter='.assets[]'
+	local i=0
+	for w in "$@"; do
+		args+=(--arg "w$i" "$w")
+		filter+=" | select(.name | test(\$w$i))"
+		i=$((i + 1))
+	done
+	filter+=' | .browser_download_url'
+	args+=(-r "$filter")
+
+	curl -sL "https://api.github.com/repos/$repo/releases/latest" \
+		| jq "${args[@]}" \
+		| xargs -r curl -LO --output-dir "$output_dir"
 }
 
 install_appimagelauncher() {
 	## add check here
-	##curl -sL https://api.github.com/repos/TheAssassin/AppImageLauncher/releases/latest \
-	##	| jq -r '.assets[] | select(.name | test("x86_64.*\\.rpm$")) | .browser_download_url' \
-	##	| xargs curl -LO --output-dir "$download_dir"
+	get_release_from_github TheAssassin/AppImageLauncher \
+		"$DOWNLOAD" x86_64 .rpm
 
 	sudo dnf install -y "$DOWNLOAD"/appimagelauncher*x86_64.rpm
 }
 
 install_appimagetool() {
 	## add check here
-	curl -sL https://api.github.com/repos/AppImage/appimagetool/releases/latest \
-		| jq -r '.assets[] | select(.name == "appimagetool-x86_64.AppImage") | .browser_download_url' \
-		| xargs curl -LO --output-dir "$software_dir/appimages"
+	get_release_from_github AppImage/appimagetool \
+		"$BIN" appimagetool-x86_64.AppImage
 
-	chmod +x "$software_dir/appimages/appimagetool*.AppImage"
+	## rename to plain name so it can be called directly
+	mv -f "$BIN"appimagetool-x86_64.AppImage "$BIN"appimagetool
+	chmod +x "$BIN"appimagetool
 }
 
 install_linuxdeploy() {
 	## add check here
-	curl -sL https://api.github.com/repos/linuxdeploy/linuxdeploy/releases/latest \
-		| jq -r '.assets[] | select(.name | test("x86_64.*\\.AppImage$")) | .browser_download_url' \
-		| xargs curl -LO --output-dir "$software_dir/appimages"
+	get_release_from_github linuxdeploy/linuxdeploy \
+		"$BIN" x86_64 .AppImage
 
-	chmod +x $software_dir/appimages/linuxdeploy*.AppImage
+	## rename to plain name so it can be called directly
+	mv -f "$BIN"linuxdeploy-x86_64.AppImage "$BIN"linuxdeploy
+	chmod +x "$BIN"linuxdeploy
 }
 
 ## ./install.sh --apps appimage
 install_appimages_env() {
+	sudo dnf install -y \
+		fuse \
+		fuse-devel \
+		fuse3
+
 	install_appimagelauncher
 	install_appimagetool
 	install_linuxdeploy 
@@ -414,6 +570,18 @@ install_vm() {
 }
 
 ## ./install.sh --apps games
+install_uu_plugin() {
+	sudo mkdir -p /home/deck/
+	sudo chown /home/deck/
+	sudo firewall-cmd --permanent --add-port=16363/tcp
+
+	curl -s uudeck.com | sudo bash
+}
+
+remove_uu_plugin() {
+	sudo rm -rf /home/deck
+}
+
 install_games_env() {
 	## steam
 	sudo dnf install -y \
@@ -424,13 +592,16 @@ install_games_env() {
 	sudo dnf install prismlauncher
 }
 
+## ./install.sh --apps just-talk
 install_just_talk() {
-	:
-	## download the just-talk-go bin to ~/.local/bin/
+	## download the just-talk-go archive to ~/downloads/
+	get_release_from_github whoamihappyhacking/just-talk-go "$DOWNLOAD" just-talk_linux_amd64.tar.gz
 
-	## unzip to ~/.local/bin -> ~/.local/bin/just-talk
-
-	## chmod +x
+	## extract in ~/downloads and move the bin to ~/.local/bin/just-talk
+	tar -xzf "$DOWNLOAD"just-talk_linux_amd64.tar.gz -C "$DOWNLOAD"
+	mv -f "$DOWNLOAD"just-talk_linux_amd64/just-talk "$BIN"just-talk
+	chmod +x "$BIN"just-talk
+	rm -rf "$DOWNLOAD"just-talk_linux_amd64
 }
 
 ## ./install.sh --apps vinput
@@ -447,16 +618,14 @@ install_vinput() {
 	install_just_talk 
 }
 
-## test
-script_test() {
-	:
-}
-
 ## main entry
 ## ./install.sh --source config|tsinghua|ustc|origin
 usage() {
 	cat <<EOF
 usage: $0 [options]
+
+  --user <dir>
+          dir       create user directories (~/downloads, ~/documents, ...)
 
   --source <config|tsinghua|ustc|origin>
           config    install rpmfusion & backup origin source
@@ -465,8 +634,20 @@ usage: $0 [options]
           ustc      switch to ustc mirror
           origin    restore origin source
 
-  --user <dir>
-          dir       create user directories (~/downloads, ~/documents, ...)
+  --toolchain     install all toolchains (c/rs/python/node/jvav/tui)
+
+  --driver <akmod|dkms|nvidia>
+          akmod    enroll akmod signing key to mok
+          dkms     enroll dkms signing key to mok
+          nvidia   install nvidia driver (akmod)
+
+  --apps <appimage|vm|games|just-talk|vinput>
+          appimage   install appimage env (launcher/tool/deploy)
+          vm         install virt-manager, libvirt, qemu-kvm
+          games      install steam & prismlauncher
+          just-talk  install just-talk-go voice input bin
+          vinput     install voice input deps + just-talk
+
 EOF
 }
 
@@ -490,6 +671,35 @@ main() {
 				dir) config_usr_dir ;;
 				*)
 					echo "error: unknown user option '${2:-}'" >&2
+					usage
+					exit 1
+					;;
+			esac
+			;;
+		--toolchain)
+			install_toolchain
+			;;
+		--apps)
+			case "${2:-}" in
+				appimage)  install_appimages_env ;;
+				vm)        install_vm ;;
+				games)     install_games_env ;;
+				just-talk) install_just_talk ;;
+				vinput)    install_vinput ;;
+				*)
+					echo "error: unknown app '${2:-}'" >&2
+					usage
+					exit 1
+					;;
+			esac
+			;;
+		--driver)
+			case "${2:-}" in
+				akmod)  sb_sign_akmod ;;
+				dkms)   sb_sign_dkms ;;
+				nvidia) install_nvidia ;;
+				*)
+					echo "error: unknown driver '${2:-}'" >&2
 					usage
 					exit 1
 					;;
