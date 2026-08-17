@@ -38,7 +38,10 @@ install_workstation_source() {
 backup_origin_source() {
 	sudo cp /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/origin-fedora.repo.bak
 	sudo cp /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/origin-fedora-updates.repo.bak
-	sudo cp /etc/yum.repos.d/rpmfusion*.repo /etc/yum.repos.d/origin-rpmfusion*.repo.bak
+	for f in /etc/yum.repos.d/rpmfusion*.repo; do
+		[ -f "$f" ] || continue
+		sudo cp "$f" "/etc/yum.repos.d/origin-$(basename "$f").bak"
+	done
 }
 
 add_tsinghua_source() {
@@ -158,6 +161,7 @@ install_tui_apps() {
 		fzf
 }
 
+## ./install.sh --toolchain
 install_toolchain() {
 	install_c_toolchain 
 	install_rs_toolchain 
@@ -242,9 +246,12 @@ sb_sign_dkms() {
 	sudo mokutil --list-new
 }
 
+## ./install.sh --driver nvidia
 install_nvidia() {
-	## check secure boot status and akmod signed
-	## if sb is on and akmod's not signed, return
+	if check_akmod_signed; then
+		echo "akmod mok already enrolled, skip"
+		return 0
+	fi
 
 	## install driver
 	sudo dnf install -y \
@@ -328,7 +335,12 @@ install_gnome_desktop() {
 
 ## ./install.sh --desktop gext
 install_gext() {
+	## check gnome status, if gnome is off, return
+	
+	## install gext
 	pip install gnome-extensions-cli
+
+	## install extensions
 }
 
 ## ./install.sh --desktop font
