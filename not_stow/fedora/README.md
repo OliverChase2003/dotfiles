@@ -20,3 +20,9 @@
 - games: steam && prismlauncher
 - virtual machine: libvirt && virtmanager
 - voice input: just-talk-go
+
+## todo
+- gnome extension install
+- gnome theme install
+- get files from github release
+- 

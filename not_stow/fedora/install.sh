@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 ## dir variable
 DOWNLOAD=$HOME/downloads/
 DOCUMENT=$HOME/documents/
@@ -69,7 +71,9 @@ add_ustc_source() {
 			"$f" | sudo tee "/etc/yum.repos.d/$bak" > /dev/null
 	done
 }
+
 # tsinghua-<name>.bak -> <name>
+## ./install.sh --source tsinghua 
 change_tsinghua_source() {
 	for f in /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/rpmfusion*.repo; do
 		[ -f "$f" ] || continue
@@ -78,6 +82,7 @@ change_tsinghua_source() {
 }
 
 # ustc-<name>.bak -> <name>
+## ./install.sh --source ustc 
 change_ustc_source() {
 	for f in /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/rpmfusion*.repo; do
 		[ -f "$f" ] || continue
@@ -86,6 +91,7 @@ change_ustc_source() {
 }
 
 # origin-<name>.bak -> <name>
+## ./install.sh --source origin
 change_origin_source() {
 	for f in /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/rpmfusion*.repo; do
 		[ -f "$f" ] || continue
@@ -93,9 +99,11 @@ change_origin_source() {
 	done
 }
 
+## ./install.sh --source config
 config_dnf_source() {
 	install_rpmfusion
 	install_workstation_source 
+	backup_origin_source 
 	add_tsinghua_source 
 	add_ustc_source 
 }
@@ -144,7 +152,7 @@ install_toolchain() {
 	install_jvav_toolchain 
 	install_node_toolchain 
 	install_python_toolchain 
-	instlal_tui_apps
+	install_tui_apps
 }
 
 ## kernel & driver
@@ -153,7 +161,19 @@ install_kernel_extra() {
 		kernel-modules-extra
 }
 
+check_sb() {
+	## SecureBoot enabled -> 0, disabled/mokutil missing -> 1
+	command -v mokutil >/dev/null 2>&1 || return 1
+	mokutil --sb-state 2>/dev/null | grep -q "^SecureBoot enabled$"
+}
+
 check_akmod_signed() {
+	## secure boot off -> no need to sign, treat as signed
+	if ! check_sb; then
+		echo "secure boot disabled, no need to sign akmod"
+		return 0
+	fi
+
 	## get the akmod key name (eg. fedora_1785773378_10876544.der)
 	local key_name
 	key_name=$(sudo ls /etc/pki/akmods/certs/ 2>/dev/null | grep fedora | head -n 1)
@@ -167,6 +187,7 @@ check_akmod_signed() {
 	sudo mokutil --list-enrolled 2>/dev/null | grep -q "$key_name"
 }
 
+## ./install.sh --driver akmod
 sb_sign_akmod() {
 	sudo dnf install -y \
 		kmodtool \
@@ -191,6 +212,7 @@ check_dkms_signed() {
 	return 1
 }
 
+## ./install.sh --driver dkms
 sb_sign_dkms() {
     sudo dnf install -y \
         dkms \
@@ -208,8 +230,24 @@ sb_sign_dkms() {
 	sudo mokutil --list-new
 }
 
+install_nvidia() {
+	## check secure boot status and akmod signed
+	## if sb is on and akmod's not signed, return
+
+	## install driver
+	sudo dnf install -y \
+		kernel-headers \
+		kernel-devel \
+		akmod-nvidia \
+		nvidia-smi
+
+	sudo akmods --force
+	sudo dracut --force
+}
+
 ## desktop
 ### gnome
+## ./install.sh --gnome desktop
 install_gnome_desktop() {
 	exclude_pkgs=(
 		gnome-boxes
@@ -276,12 +314,12 @@ install_gnome_desktop() {
 		nautilus-open-any-terminal
 }
 
-### gnome-plugins
+## ./install.sh --desktop gext
 install_gext() {
 	pip install gnome-extensions-cli
 }
 
-### font
+## ./install.sh --desktop font
 install_fonts() {
 	sudo dnf install -y \
 		google-noto-sans-cjk-fonts \
@@ -305,7 +343,6 @@ get_release_from_github() {
 	:
 }
 
-### appimage environment
 install_appimagelauncher() {
 	## add check here
 	##curl -sL https://api.github.com/repos/TheAssassin/AppImageLauncher/releases/latest \
@@ -333,13 +370,14 @@ install_linuxdeploy() {
 	chmod +x $software_dir/appimages/linuxdeploy*.AppImage
 }
 
+## ./install.sh --apps appimage
 install_appimages_env() {
 	install_appimagelauncher
 	install_appimagetool
 	install_linuxdeploy 
 }
 
-### virtual machine
+## ./install.sh --apps vm
 install_vm() {
 	sudo dnf install -y \
 		virt-manager \
@@ -351,7 +389,7 @@ install_vm() {
 	sudo usermod -aG libvirt $USER
 }
 
-### games
+## ./install.sh --apps games
 install_games_env() {
 	## steam
 	sudo dnf install -y \
@@ -362,7 +400,15 @@ install_games_env() {
 	sudo dnf install prismlauncher
 }
 
-### voice input
+install_just_talk() {
+	## download the just-talk-go bin to ~/.local/bin/
+
+	## unzip to ~/.local/bin -> ~/.local/bin/just-talk
+
+	## chmod +x
+}
+
+## ./install.sh --apps vinput
 install_vinput() {
 	sudo dnf install -y \
 		libXinerama-devel \
@@ -373,10 +419,49 @@ install_vinput() {
 	
 	sudo usermod -aG input $USER
 
-	## download the just-talk-go bin to ~/.local/bin/
+	install_just_talk 
 }
 
 ## test
 script_test() {
 	:
 }
+
+## main entry
+## ./install.sh --source config|tsinghua|ustc|origin
+usage() {
+	cat <<EOF
+usage: $0 [options]
+
+  --source <config|tsinghua|ustc|origin>
+          config    install rpmfusion & backup origin source
+                    & add tsinghua/ustc mirror
+          tsinghua  switch to tsinghua mirror
+          ustc      switch to ustc mirror
+          origin    restore origin source
+EOF
+}
+
+main() {
+	case "${1:-}" in
+		--source)
+			case "${2:-}" in
+				config)   config_dnf_source ;;
+				tsinghua) change_tsinghua_source ;;
+				ustc)     change_ustc_source ;;
+				origin)   change_origin_source ;;
+				*)
+					echo "error: unknown source '${2:-}'" >&2
+					usage
+					exit 1
+					;;
+			esac
+			;;
+		*)
+			usage
+			exit 1
+			;;
+	esac
+}
+
+main "$@"
