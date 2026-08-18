@@ -31,10 +31,6 @@ ALL_PACKAGES=(
 )
 
 # 通用 stow 入口: 在 dotfiles 目录下对指定包执行 stow
-do_stow() {
-    local pkg="$1"
-    stow -d "$DOTFILES_DIR" -t "$HOME" -v "$pkg"
-}
 
 usage() {
     echo "Usage: $0 [all|pkg ...]"
@@ -46,62 +42,62 @@ usage() {
 stow_bash() {
     mkdir -p "$HOME/.config/bash"
     rm -rf "$HOME"/bash*    # 清理旧的 ~/.bash* 文件, 避免与符号链接冲突
-    do_stow bash
+    stow bash
 }
 
 stow_btop() {
     mkdir -p "$HOME/.config/btop"
-    do_stow btop
+    stow btop
 }
 
 stow_git() {
     mkdir -p "$HOME/.config/git"
-    do_stow git
+    stow git
 }
 
 stow_kitty() {
     mkdir -p "$HOME/.config/kitty"
-    do_stow kitty
+    stow kitty
 }
 
 stow_nodejs() {
     mkdir -p "$HOME/.config/npm"
-    do_stow nodejs
+    stow nodejs
 }
 
 stow_nvim() {
     mkdir -p "$HOME/.config/nvim"
-    do_stow nvim
+    stow nvim
 }
 
 stow_opencode() {
     mkdir -p "$HOME/.config/opencode"
-    do_stow opencode
+    stow opencode
 }
 
 stow_pi() {
     mkdir -p "$HOME/.config/pi"
-    do_stow pi
+    stow pi
 }
 
 stow_rime-wanxiang() {
     mkdir -p "$HOME/.config/ibus"
-    do_stow rime-wanxiang
+    stow rime-wanxiang
 }
 
 stow_tmux() {
     mkdir -p "$HOME/.config/tmux"
-    do_stow tmux
+    stow tmux
 }
 
 stow_typora() {
     mkdir -p "$HOME/.config/Typora"
-    do_stow typora
+    stow typora
 }
 
 stow_yazi() {
     mkdir -p "$HOME/.config/yazi"
-    do_stow yazi
+    stow yazi
 }
 
 # ---------------- 参数解析与调度 ----------------
