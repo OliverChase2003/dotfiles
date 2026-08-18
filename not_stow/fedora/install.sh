@@ -297,7 +297,7 @@ install_nvidia() {
 
 ## desktop
 ### gnome
-## ./install.sh --gnome desktop
+## ./install.sh --desktop gnome
 install_gnome_desktop() {
 	exclude_pkgs=(
 		gnome-boxes
@@ -365,55 +365,67 @@ install_gnome_desktop() {
 }
 
 ## ./install.sh --desktop gext
+gext_path=./gext_list.txt
+
 install_gext() {
 	## install gext
 	pip install gnome-extensions-cli
 
 	## install extensions
+	while read -r ext; do
+		[ -z "$ext" ] && continue
+		echo "installing extension: $ext"
+		gnome-extensions-cli install "$ext"
+	done < "$gext_path"
+}
+
+## ./install.sh --desktop bk_gext
+backup_gext() {
+	## save to extension_list.txt
+	gext list --only-uuid > "$gext_path"
+	## check git diff of $gext_path
+	git add "$gext_path"
+	if git diff --cached --quiet; then
+		echo "no extension change, skip commit"
+	else
+		git commit -m "backup gnome extension"
+		git push
+	fi
 }
 
 whitesurgtk_url="https://github.com/vinceliuice/WhiteSur-gtk-theme.git"
-theme="WhiteSur-gtk-theme"
-theme_dir="$HOME/.local/share/themes/"
-install_gtk_theme() {
-	git clone "${whitesurgtk_url}" "$APPS/$theme" --depth 1
-	chmod +x "$APPS/$theme/install.sh"
-	chmod +x "$APPS/$theme/tweaks.sh"
+gtk_theme="WhiteSur-gtk-theme"
+gtk_theme_dir="$HOME/.local/share/themes/"
 
-	sh "$software_dir/$theme/install.sh" \
-		--dest $theme_dir \
+build_gtk_theme() {
+	sh "$APPS/$gtk_theme/install.sh" \
+		--dest $gtk_theme_dir \
 		--opacity normal \
 		--color light \
 		--nautilus glassy \
 		--libadwaita \
 		--shell -i fedora -b default -p 60 -h bigger -normal \
 		--round --darker
-}
-
-update_gtk_theme() {
-	cd "$software_dir/$theme" || exit 1
-	git pull
-	sh "$software_dir/$theme/install.sh" \
-		--dest $theme_dir \
-		--opacity normal \
-		--color light \
-		--nautilus glassy \
-		--libadwaita \
-		--shell -i fedora -b default -p 60 -h bigger -normal \
-		--round --darker
-
 }
 
 ## ./install.sh --desktop gtk_theme
 gtk_theme() {
-	if [ -d "$APPS/$theme" ]; then
-		install_gtk_theme 
+	if [ ! -d "$APPS/$gtk_theme" ]; then
+		git clone "${whitesurgtk_url}" "$APPS/$gtk_theme" --depth 1
+		cd "$APPS/$gtk_theme" || exit 1
+		chmod +x "$APPS/$gtk_theme/install.sh"
+		chmod +x "$APPS/$gtk_theme/tweaks.sh"
+		build_gtk_theme 
 	else
-		update_gtk_theme 
+		cd "$APPS/$gtk_theme" || exit 1
+		git pull
+		build_gtk_theme 
 	fi
 }
 
-## ./install.sh --desktop qt_theme
+whitesurqt_url="https://github.com/FengZhongShaoNian/QWhiteSurGtkDecorations.git"
+qt_theme="QWhiteSurGtkDecorations"
+
 install_qt_theme_deps() {
 	sudo dnf install -y \
 		wayland-devel
@@ -437,9 +449,7 @@ install_qt_theme_deps() {
 		qt6ct
 }
 
-qt_theme_build() {
-	cd "$software_dir/$theme" || exit 1
-
+build_qt_theme() {
 	rm -rf build/
 	## modify decoration size and look
 	sed -i.bak \
@@ -463,13 +473,17 @@ qt_theme_build() {
 	cd .. && rm build -rf
 }
 
-install_qt_theme() {
-	install_qt_theme_deps 
-}
-
-update_qt_theme() {
-	install_qt_theme_deps 
-	
+## ./install.sh --desktop qt_theme
+qt_theme() {
+	if [ ! -d "$APPS/$qt_theme" ]; then
+		git clone "$whitesurqt_url" "$APPS/$qt_theme"
+		cd "$APPS/$qt_theme" || exit 1
+		build_qt_theme 
+	else
+		cd "$APPS/$qt_theme" || exit 1
+		git pull
+		build_qt_theme 
+	fi
 }
 
 ## ./install.sh --desktop font
@@ -523,6 +537,17 @@ install_appimagelauncher() {
 		"$DOWNLOAD" x86_64 .rpm
 
 	sudo dnf install -y "$DOWNLOAD"/appimagelauncher*x86_64.rpm
+
+	cat > "$HOME/.config/appimagelauncher.cfg" << EOF
+[AppImageLauncher]
+ask_to_move=true
+destination=${APPIMAGES%/}
+enable_daemon=true
+
+[appimagelauncherd]
+%23%20additional_directories_to_watch=~/otherApplications:/even/more/applications
+%23%20monitor_mounted_filesystems=false
+EOF
 }
 
 install_appimagetool() {
@@ -592,7 +617,6 @@ install_games_env() {
 	sudo dnf install prismlauncher
 }
 
-## ./install.sh --apps just-talk
 install_just_talk() {
 	## download the just-talk-go archive to ~/downloads/
 	get_release_from_github whoamihappyhacking/just-talk-go "$DOWNLOAD" just-talk_linux_amd64.tar.gz
@@ -600,8 +624,9 @@ install_just_talk() {
 	## extract in ~/downloads and move the bin to ~/.local/bin/just-talk
 	tar -xzf "$DOWNLOAD"just-talk_linux_amd64.tar.gz -C "$DOWNLOAD"
 	mv -f "$DOWNLOAD"just-talk_linux_amd64/just-talk "$BIN"just-talk
-	chmod +x "$BIN"just-talk
 	rm -rf "$DOWNLOAD"just-talk_linux_amd64
+
+	chmod +x "$BIN"just-talk
 }
 
 ## ./install.sh --apps vinput
@@ -636,16 +661,23 @@ usage: $0 [options]
 
   --toolchain     install all toolchains (c/rs/python/node/jvav/tui)
 
-  --driver <akmod|dkms|nvidia>
+  --driver <kextra|akmod|dkms|nvidia>
           akmod    enroll akmod signing key to mok
           dkms     enroll dkms signing key to mok
           nvidia   install nvidia driver (akmod)
+
+  --desktop <gnome|gext|bk_gext|gtk_theme|qt_theme|font>
+          gnome     install gnome desktop (minimal)
+          gext      install gnome extensions cli
+          bk_gext   backup installed gnome extensions to $gext_path
+          gtk_theme install WhiteSur gtk theme
+          qt_theme  install qt theme deps
+          font      install fonts (noto/source-han/nerd)
 
   --apps <appimage|vm|games|just-talk|vinput>
           appimage   install appimage env (launcher/tool/deploy)
           vm         install virt-manager, libvirt, qemu-kvm
           games      install steam & prismlauncher
-          just-talk  install just-talk-go voice input bin
           vinput     install voice input deps + just-talk
 
 EOF
@@ -679,27 +711,42 @@ main() {
 		--toolchain)
 			install_toolchain
 			;;
-		--apps)
-			case "${2:-}" in
-				appimage)  install_appimages_env ;;
-				vm)        install_vm ;;
-				games)     install_games_env ;;
-				just-talk) install_just_talk ;;
-				vinput)    install_vinput ;;
-				*)
-					echo "error: unknown app '${2:-}'" >&2
-					usage
-					exit 1
-					;;
-			esac
-			;;
 		--driver)
 			case "${2:-}" in
+				kextra) install_kernel_extra ;;
 				akmod)  sb_sign_akmod ;;
 				dkms)   sb_sign_dkms ;;
 				nvidia) install_nvidia ;;
 				*)
 					echo "error: unknown driver '${2:-}'" >&2
+					usage
+					exit 1
+					;;
+			esac
+			;;
+		--desktop)
+			case "${2:-}" in
+				gnome)     install_gnome_desktop ;;
+				gext)      install_gext ;;
+				bk_gext)   backup_gext ;;
+				gtk_theme) gtk_theme ;;
+				qt_theme)  qt_theme ;;
+				font)      install_fonts ;;
+				*)
+					echo "error: unknown desktop '${2:-}'" >&2
+					usage
+					exit 1
+					;;
+			esac
+			;;
+		--apps)
+			case "${2:-}" in
+				appimage)  install_appimages_env ;;
+				vm)        install_vm ;;
+				games)     install_games_env ;;
+				vinput)    install_vinput ;;
+				*)
+					echo "error: unknown app '${2:-}'" >&2
 					usage
 					exit 1
 					;;
