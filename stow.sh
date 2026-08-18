@@ -37,8 +37,8 @@ do_stow() {
 }
 
 usage() {
-    echo "用法: $0 [all|pkg ...]"
-    echo "可用包: ${ALL_PACKAGES[*]}"
+    echo "Usage: $0 [all|pkg ...]"
+    echo "Available packages: ${ALL_PACKAGES[*]}"
 }
 
 # ---------------- 包函数 (每包一个, 可独立增删) ----------------
@@ -110,7 +110,7 @@ TARGETS=()
 while [ $# -gt 0 ]; do
     case "$1" in
         -h|--help) usage; exit 0 ;;
-        -*) echo "未知选项: $1" >&2; usage >&2; exit 1 ;;
+        -*) echo "Unknown option: $1" >&2; usage >&2; exit 1 ;;
         *) TARGETS+=("$1") ;;
     esac
     shift
@@ -130,9 +130,9 @@ for pkg in "${TARGETS[@]}"; do
     if declare -F "stow_$pkg" >/dev/null 2>&1; then
         "stow_$pkg"
     else
-        echo "错误: 未知包 '$pkg'" >&2
+        echo "Error: unknown package '$pkg'" >&2
         exit 1
     fi
 done
 
-echo "完成。"
+echo "Done."
