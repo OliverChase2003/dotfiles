@@ -475,6 +475,7 @@ build_qt_theme() {
 
 ## ./install.sh --desktop qt_theme
 qt_theme() {
+	install_qt_theme_deps 
 	if [ ! -d "$APPS/$qt_theme" ]; then
 		git clone "$whitesurqt_url" "$APPS/$qt_theme"
 		cd "$APPS/$qt_theme" || exit 1
