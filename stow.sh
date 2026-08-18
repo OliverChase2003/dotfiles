@@ -41,7 +41,7 @@ usage() {
 
 stow_bash() {
     mkdir -p "$HOME/.config/bash"
-    rm -rf "$HOME"/bash*    # 清理旧的 ~/.bash* 文件, 避免与符号链接冲突
+    rm -rf "$HOME"/.bash*    # 清理旧的 ~/.bash* 文件, 避免与符号链接冲突
     stow bash
 }
 
