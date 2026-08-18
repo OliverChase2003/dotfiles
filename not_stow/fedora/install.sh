@@ -14,6 +14,9 @@ BIN=$HOME/.local/bin/
 APPS=$HOME/.local/share/apps/
 APPIMAGES=$HOME/.local/share/appimages/
 
+RUSTUP=$HOME/.local/share/rustup/
+CARGO=$HOME/.local/share/cargo/
+
 ## user 
 ## ./install.sh --user dir
 make_user_dirs() {
@@ -355,11 +358,19 @@ install_gnome_desktop() {
 		iwlwifi-dvm-firmware \
 		iwlwifi-mvm-firmware
 
+	sudo dnf install -y \
+		kitty \
+		gnome-extensions-app \
+		gnome-tweaks 
+		gthumb \
+		celluloid \
+		ibus-rime
+	
 	## xdg-terminal-exec
 	sudo dnf install -y \
 		xdg-terminal-exec
 	## nautilus open
-	sudo dnf copr enable monkeygold/nautilus-open-any-terminal -y && sudo dnf update -y
+	sudo dnf copr enable monkeygold/nautilus-open-any-terminal -y
 	sudo dnf install -y \
 		nautilus-open-any-terminal
 }
@@ -487,6 +498,13 @@ qt_theme() {
 	fi
 }
 
+## ./install.sh --desktop icon
+install_icon() {
+	sudo dnf copr enable rivenirvana/morewaita-icon-theme
+	sudo dnf install -y \
+		morewaita-icon-theme
+}
+
 ## ./install.sh --desktop font
 install_fonts() {
 	sudo dnf install -y \
@@ -502,7 +520,7 @@ install_fonts() {
 		adobe-source-serif-pro-fonts \
 		adobe-source-sans-pro-fonts
 
-	sudo dnf copr enable che/nerd-fonts
+	sudo dnf copr enable che/nerd-fonts -y
 	sudo dnf install -y nerd-fonts
 }
 
@@ -530,6 +548,12 @@ get_release_from_github() {
 	curl -sL "https://api.github.com/repos/$repo/releases/latest" \
 		| jq "${args[@]}" \
 		| xargs -r curl -LO --output-dir "$output_dir"
+}
+
+##./install.sh --apps desktop
+install_desktop_app() {
+	:
+	##sudo dnf install -y \
 }
 
 install_appimagelauncher() {
@@ -614,8 +638,8 @@ install_games_env() {
 		steam
 
 	## prismlauncher
-	sudo dnf copr enable g3tchoo/prismlauncher
-	sudo dnf install prismlauncher
+	sudo dnf copr enable g3tchoo/prismlauncher -y
+	sudo dnf install -y prismlauncher
 }
 
 install_just_talk() {
@@ -667,15 +691,16 @@ usage: $0 [options]
           dkms     enroll dkms signing key to mok
           nvidia   install nvidia driver (akmod)
 
-  --desktop <gnome|gext|bk_gext|gtk_theme|qt_theme|font>
+  --desktop <gnome|gext|bk_gext|gtk_theme|qt_theme|font|icon>
           gnome     install gnome desktop (minimal)
           gext      install gnome extensions cli
           bk_gext   backup installed gnome extensions to $gext_path
           gtk_theme install WhiteSur gtk theme
           qt_theme  install qt theme deps
           font      install fonts (noto/source-han/nerd)
+		  icon		install icon theme (morewaita icon theme)
 
-  --apps <appimage|vm|games|just-talk|vinput>
+  --apps <appimage|vm|games|vinput>
           appimage   install appimage env (launcher/tool/deploy)
           vm         install virt-manager, libvirt, qemu-kvm
           games      install steam & prismlauncher
@@ -733,6 +758,7 @@ main() {
 				gtk_theme) gtk_theme ;;
 				qt_theme)  qt_theme ;;
 				font)      install_fonts ;;
+				icon)	   install_icon ;;
 				*)
 					echo "error: unknown desktop '${2:-}'" >&2
 					usage
@@ -742,6 +768,7 @@ main() {
 			;;
 		--apps)
 			case "${2:-}" in
+				desktop)   install_desktop_app ;;
 				appimage)  install_appimages_env ;;
 				vm)        install_vm ;;
 				games)     install_games_env ;;
