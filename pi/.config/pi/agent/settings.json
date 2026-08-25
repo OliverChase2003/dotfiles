@@ -1,8 +1,8 @@
 {
-  "lastChangelogVersion": "0.84.2",
+  "lastChangelogVersion": "0.84.3",
   "theme": "catppuccin-tui-mocha",
   "defaultProvider": "deepseek",
-  "defaultModel": "deepseek-v4-flash",
+  "defaultModel": "deepseek-v4-flash-vision-exp",
   "defaultThinkingLevel": "high",
   "externalEditor": "nvim",
   "packages": [

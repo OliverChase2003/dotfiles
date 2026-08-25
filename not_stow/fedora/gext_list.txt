@@ -10,8 +10,6 @@ gnome-fuzzy-app-search@gnome-shell-extensions.Czarlie.gitlab.com
 ibus-tweaker@tuberry.github.com
 input-source-dbus-interface@raiden_fumo
 Move_Clock@rmy.pobox.com
-space-bar@luchrioh
-system-monitor@gnome-shell-extensions.gcampax.github.com
 transparent-window-moving@noobsai.github.com
 user-theme@gnome-shell-extensions.gcampax.github.com
 vim-altTab@kokong.info

@@ -4,3 +4,5 @@ agent/models-store.json
 agent/skills/anthropic/
 sessions/
 agent/extensions/pi-permission-system/logs/
+agent/skills/
+

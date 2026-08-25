@@ -1,3 +1,9 @@
+## 行为
+gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal kitty ## 在 kitty 打开
+gsettings set org.gnome.desktop.default-applications.terminal exec 'xdg-terminal-exec' ## 默认打开终端应用的方式
+
+gsettings set org.gnome.shell always-show-log-out true ## 显示“登出”按钮
+
 # keymap of gnome
 ## 窗口
 gsettings set org.gnome.mutter.wayland.keybindings restore-shortcuts "[]" ## 重置快捷键（禁用）
@@ -56,6 +62,4 @@ gsettings set org.gnome.settings-daemon.plugins.media-keys screensaver "['<Super
 gsettings set org.gnome.settings-daemon.plugins.media-keys logout "['<Super><Alt>Escape']" ## 登出
 
 # terminal open settings of gnome
-gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal kitty
-gsettings set org.gnome.desktop.default-applications.terminal exec 'xdg-terminal-exec'
 

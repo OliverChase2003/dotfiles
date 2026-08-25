@@ -155,19 +155,20 @@ config_dnf_source() {
 install_c_toolchain() {
 	sudo dnf group install -y \
 		c-development
+
+	sudo dnf install cmake
 }
 
 install_rs_toolchain() {
-	sudo dnf install -y \
-		rustup
-	rustup-init -y
+	sudo dnf install -y rustup
 }
 
-install_python_toolchain() {
+install_py_toolchain() {
 	sudo dnf install -y \
 		python3 \
-		Python3-devel \
+		python3-devel \
 		python3-pip
+
 }
 
 install_node_toolchain() {
@@ -186,7 +187,8 @@ install_tui_apps() {
 		tmux \
 		nvim \
 		fastfetch \
-		fzf
+		fzf \
+		gh
 }
 
 ## ./install.sh --toolchain
@@ -195,7 +197,7 @@ install_toolchain() {
 	install_rs_toolchain 
 	install_jvav_toolchain 
 	install_node_toolchain 
-	install_python_toolchain 
+	install_py_toolchain
 	install_tui_apps
 }
 
@@ -282,8 +284,8 @@ sb_sign_dkms() {
 
 ## ./install.sh --driver nvidia
 install_nvidia() {
-	if check_akmod_signed; then
-		echo "akmod mok already enrolled, skip"
+	if ! check_akmod_signed; then
+		echo "akmod mok is not enrolled, skip"
 		return 0
 	fi
 
@@ -353,6 +355,7 @@ install_gnome_desktop() {
 	sudo dnf install -y \
 		alsa-sof-firmware \
 		alsa-utils
+
 	## add wifi support 
 	sudo dnf install -y \
 		iwlwifi-dvm-firmware \
@@ -376,7 +379,7 @@ install_gnome_desktop() {
 }
 
 ## ./install.sh --desktop gext
-gext_path=./gext_list.txt
+gext_path=./gnome/ext_list.txt
 
 install_gext() {
 	## install gext
@@ -394,14 +397,6 @@ install_gext() {
 backup_gext() {
 	## save to extension_list.txt
 	gext list --only-uuid > "$gext_path"
-	## check git diff of $gext_path
-	git add "$gext_path"
-	if git diff --cached --quiet; then
-		echo "no extension change, skip commit"
-	else
-		git commit -m "backup gnome extension"
-		git push
-	fi
 }
 
 whitesurgtk_url="https://github.com/vinceliuice/WhiteSur-gtk-theme.git"
@@ -412,11 +407,12 @@ build_gtk_theme() {
 	sh "$APPS/$gtk_theme/install.sh" \
 		--dest $gtk_theme_dir \
 		--opacity normal \
-		--color light \
 		--nautilus glassy \
 		--libadwaita \
 		--shell -i fedora -b default -p 60 -h bigger -normal \
-		--round --darker
+		--round \
+		--darker
+		##--color light \
 }
 
 ## ./install.sh --desktop gtk_theme
@@ -772,6 +768,7 @@ main() {
 				appimage)  install_appimages_env ;;
 				vm)        install_vm ;;
 				games)     install_games_env ;;
+				uu)        install_uu_plugin ;;
 				vinput)    install_vinput ;;
 				*)
 					echo "error: unknown app '${2:-}'" >&2
