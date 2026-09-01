@@ -12,7 +12,8 @@ local catppuccin_opt = {
 		telescope = {
 			enabled = true,
 		}
-	}
+	},
+	transparent_background = true
 }
 
 local function vimpack_setup_catppuccin()
