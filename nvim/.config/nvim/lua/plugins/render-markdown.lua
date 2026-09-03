@@ -78,5 +78,5 @@ else
 end
 
 -- keymaps
-vim.keymap.set('n', '<leader>Md', ':RenderMarkdown toggle<CR>', { desc = 'Toggle render markdown' })
+vim.keymap.set('n', '<leader>md', ':RenderMarkdown toggle<CR>', { desc = 'Toggle render markdown' })
 

@@ -26,6 +26,8 @@ vim.keymap.set('n', '<leader>tc',
 	{ desc = 'Open terminal horizontal' }
 )
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Quit terminal mode' })
+vim.keymap.set('t', '<C-e>', '<C-\\><C-n>', { desc = 'Quit terminal mode' })
+
 -- quit
 vim.keymap.set('n', '<leader>qq', ':qa!<CR>', { desc = 'Quit all' })
 -- restart
