@@ -3,6 +3,10 @@ patch:
   #"ascii_composer/switch_key/Shift_L": noop
   #"ascii_composer/switch_key/Shift_R": noop
 
+  ascii_composer:
+    switch_key:
+      Shift_L: noop # commit_code | commit_text | inline_ascii | clear | noop
+      Shift_R: noop # commit_code | commit_text | inline_ascii | clear | noop
   key_binder:
     bindings:
       # 翻页 , .
