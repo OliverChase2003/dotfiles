@@ -1,7 +1,18 @@
 local last_im = 'us'
 
+local function check_ibus_gtk_plugin()
+	if vim.fn.executable("gext") ~= 1 then
+		return false
+	end
+
+	local out = vim.fn.system({ "gext", "list", "--only-uuid" })
+	return vim.fn.stridx(out, "input-source-dbus-interface@raiden_fumo") ~= -1
+end
+
 local function check_ibus()
-	return vim.fn.executable("ibus-daemon") == 1
+	local if_ibus = vim.fn.executable("ibus-daemon") == 1
+	local if_gtk_plugin = check_ibus_gtk_plugin()
+	return if_ibus and if_gtk_plugin
 end
 
 local function check_fcitx()
@@ -25,7 +36,7 @@ local function get_current_ibus()
 end
 
 local function switch_to_rime()
-	if not check_ibus() then
+	if check_ibus() then
 		vim.fn.jobstart({
 			"gdbus", "call", "--session",
 			"--dest", "org.gnome.Shell",
@@ -34,8 +45,6 @@ local function switch_to_rime()
 			"rime"
 		})
 	elseif check_fcitx() then
-		-- nothing
-	else
 		-- nothing
 	end
 end
@@ -51,8 +60,6 @@ local function switch_to_us()
 		})
 	elseif check_fcitx() then
 		-- nothing
-	else
-		-- nothing
 	end
 end
 
@@ -60,15 +67,24 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 	callback = function()
 		if last_im == 'rime' then
 			switch_to_rime()
+		elseif last_im == 'us' then
+			switch_to_us()
 		end
 	end,
 })
 
-vim.api.nvim_create_autocmd(
-	{ "InsertLeave", "CmdlineLeave", "TermLeave" },
-	{
+vim.api.nvim_create_autocmd("InsertLeave", {
 		callback = function()
 			last_im = get_current_ibus()
+			switch_to_us()
+		end,
+	}
+)
+
+vim.api.nvim_create_autocmd(
+	{ "CmdlineLeave", "TermLeave" },
+	{
+		callback = function()
 			switch_to_us()
 		end,
 	}
@@ -105,8 +121,5 @@ vim.api.nvim_create_autocmd("FocusGained", {
 vim.api.nvim_create_autocmd("FocusLost", {
 	callback = function()
 		lost_gain_time = vim.uv.hrtime()
-		if vim.fn.mode() == 'i' then
-			last_im = get_current_ibus()
-		end
 	end,
 })
