@@ -61,5 +61,5 @@ gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-last "[]" ## �
 gsettings set org.gnome.settings-daemon.plugins.media-keys screensaver "['<Super><Alt>l']" ## 锁屏
 gsettings set org.gnome.settings-daemon.plugins.media-keys logout "['<Super><Alt>Escape']" ## 登出
 
-# terminal open settings of gnome
-
+# input method
+gsettings set org.gnome.desktop.wm.keybindings switch-input-source "['<Shift>space']"
