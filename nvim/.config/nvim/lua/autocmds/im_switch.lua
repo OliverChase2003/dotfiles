@@ -63,6 +63,12 @@ local function switch_to_us()
 	end
 end
 
+vim.api.nvim_create_autocmd("VimEnter", {
+    callback = function()
+		switch_to_us()
+    end,
+})
+
 vim.api.nvim_create_autocmd("InsertEnter", {
 	callback = function()
 		if last_im == 'rime' then

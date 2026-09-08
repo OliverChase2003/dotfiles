@@ -34,6 +34,6 @@ else
 end
 
 vim.keymap.set('n', '<leader>csv',
-	':CsvViewToggle delimiter=, display_mode=border header_lnum=1<CR>',
+	'<CMD>CsvViewToggle delimiter=, display_mode=border header_lnum=1<CR>',
 	{ desc = 'Csv view' }
 )

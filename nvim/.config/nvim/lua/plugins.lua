@@ -50,6 +50,7 @@ local function vimpack_setup()
 	require("plugins.csvview")
 	-- opencode
 	-- require("plugins.opencode")
+	-- about pi
 	require("plugins.pi")
 end
 

@@ -28,4 +28,4 @@ else
 end
 
 -- keymaps
-vim.keymap.set("n", "<leader>mm", ":Mason<CR>", { desc = "Open mason" })
+vim.keymap.set("n", "<leader>mm", "<CMD>Mason<CR>", { desc = "Open mason" })

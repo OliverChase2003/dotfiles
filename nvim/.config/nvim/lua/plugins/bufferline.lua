@@ -53,8 +53,12 @@ end, { desc = 'Delete buffer' })
 
 vim.keymap.set('n', '<leader>bx', function()
 	if DapuiStatus == true then return end
-	-- OpencodeStatus = vim.inspect(require('opencode.ui.ui').is_opencode_focused())
-	-- if OpencodeStatus == true then return end
 	vim.cmd('bdelete!')
 end, { desc = 'Force delete buffer' })
-vim.keymap.set('n', '<leader>bb', ':e!<CR>', { desc = 'Reload buffer'})
+
+vim.keymap.set('n', '<C-d>', function()
+	if DapuiStatus == true then return end
+	vim.cmd('bdelete!')
+end, { desc = 'Force delete buffer'})
+
+vim.keymap.set('n', '<leader>bb', '<CMD>e!<CR>', { desc = 'Reload buffer'})

@@ -33,4 +33,4 @@ else
 	lazy_setup_whichkey()
 end
 
-vim.keymap.set('n', '<leader>wk', ':WhichKey<CR>', { desc = 'View keymap' })
+vim.keymap.set('n', '<leader>wk', '<CMD>WhichKey<CR>', { desc = 'View keymap' })
