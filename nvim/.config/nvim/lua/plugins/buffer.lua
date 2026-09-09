@@ -1,7 +1,3 @@
-local Enable = true
-
-if Enable == false then return end
-
 local mocha = require("catppuccin.palettes").get_palette "mocha"
 
 local bufferline_opt = {
@@ -28,7 +24,7 @@ local function vimpack_setup_bufferline()
 end
 
 local function lazy_setup_bufferline()
-
+	require('bufferline').setup(bufferline_opt)
 end
 
 if vim.fn.has("nvim-0.12") == 1 then
@@ -58,7 +54,11 @@ end, { desc = 'Force delete buffer' })
 
 vim.keymap.set('n', '<C-d>', function()
 	if DapuiStatus == true then return end
+	if vim.api.nvim_buf_get_name(0) == '' then
+		vim.cmd('qa')
+		return
+	end
 	vim.cmd('bdelete!')
-end, { desc = 'Force delete buffer'})
+end, { desc = 'Force delete buffer (quit if sole [No Name])'})
 
 vim.keymap.set('n', '<leader>bb', '<CMD>e!<CR>', { desc = 'Reload buffer'})

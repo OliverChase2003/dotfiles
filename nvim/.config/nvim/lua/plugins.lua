@@ -26,31 +26,24 @@ end
 
 local function vimpack_setup()
 	-- look
-	require("plugins.nvim-web-devicons")
-	require("plugins.catppuccin")
-	require("plugins.alpha")
-	require("plugins.bufferline")
-	require("plugins.lualine")
+	require("plugins.look")
+	-- buffer
+	require("plugins.buffer")
+	-- file
+	require("plugins.file")
 	-- code
-	-- require("plugins.treesitter")
+	require("plugins.treesitter")
+	require("plugins.cmp")
 	require("plugins.mason")
 	require("plugins.lsp")
 	require("plugins.dap")
-	require("plugins.blink")
-	require("plugins.autopairs")
-	require("plugins.conform")
+	require("plugins.fmt")
 	require("plugins.which-key")
-	-- file
-	require("plugins.oil")
-	require("plugins.telescope")
-	-- markdown
-	require("plugins.render-markdown")
-	require("plugins.image")
+	-- md
+	require("plugins.markdown")
 	-- csv
-	require("plugins.csvview")
-	-- opencode
-	-- require("plugins.opencode")
-	-- about pi
+	require("plugins.csv")
+	-- pi
 	require("plugins.pi")
 end
 

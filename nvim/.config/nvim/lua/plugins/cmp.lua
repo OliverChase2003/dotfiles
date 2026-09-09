@@ -1,10 +1,18 @@
-local Enable = true
-
-if Enable == false then return end
-
-if not vim.fn.has("nvim-0.10") == 1 then
-	return
-end
+local autopairs_opt = {
+	fast_wrap = {
+		map = '<M-e>',
+		chars = { '{', '[', '(', '"', "'" },
+		pattern = [=[[%'%"%>%]%)%}%,]]=],
+		end_key = '$',
+		before_key = 'h',
+		after_key = 'l',
+		cursor_pos_before = true,
+		keys = 'qwertyuiopzxcvbnmasdfghjkl',
+		manual_position = true,
+		highlight = 'Search',
+		highlight_grey= 'Comment'
+	}
+}
 
 local blink_opt = {
 	completion = {
@@ -57,17 +65,27 @@ local blink_opt = {
 	},
 	sources = {
 		default = { 'lsp', 'path', 'buffer' },
-		-- per_filetype = {
-		-- 	sql = { 'dadbod', 'buffer' }
-		-- },
-		-- providers = {
-		-- 	dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
-		-- }
 	},
 	signature = { enabled = true },
-	-- fuzzy = { implementation = "lua" },
 	fuzzy = { implementation = "prefer_rust_with_warning" },
 }
+
+local function vimpack_setup_autopairs()
+	vim.pack.add({
+		{ src = "https://github.com/windwp/nvim-autopairs" }
+	})
+
+	vim.api.nvim_create_autocmd({ "InsertEnter", "CmdlineEnter" }, {
+		group = vim.api.nvim_create_augroup("SetupAutoPairs", { clear = true }),
+		once = true,
+		callback = function()
+			require('nvim-autopairs').setup(autopairs_opt)
+		end
+	})
+end
+
+local function lazy_setup_autopairs()
+end
 
 local function vimpack_setup_blink()
 	vim.pack.add({
@@ -87,7 +105,9 @@ local function lazy_setup_blink()
 end
 
 if vim.fn.has("nvim-0.12") == 1 then
+	vimpack_setup_autopairs()
 	vimpack_setup_blink()
 else
+	lazy_setup_autopairs()
 	lazy_setup_blink()
 end
