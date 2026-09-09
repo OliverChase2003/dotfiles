@@ -57,3 +57,5 @@ vim.keymap.set("n", "<leader>ih",
 	end,
 	{ desc = 'Toggle inlay hint' }
 )
+
+vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = 'Rename varible'})

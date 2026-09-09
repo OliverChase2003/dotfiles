@@ -32,13 +32,13 @@ local function vimpack_setup()
 	-- file
 	require("plugins.file")
 	-- code
-	require("plugins.treesitter")
+	require("plugins.ts")
 	require("plugins.cmp")
 	require("plugins.mason")
 	require("plugins.lsp")
 	require("plugins.dap")
 	require("plugins.fmt")
-	require("plugins.which-key")
+	require("plugins.key")
 	-- md
 	require("plugins.markdown")
 	-- csv
@@ -49,7 +49,6 @@ end
 
 if vim.fn.has("nvim-0.12") == 1 then
 	vimpack_setup()
-	-- nothing
 else
 	lazy_setup()
 end
