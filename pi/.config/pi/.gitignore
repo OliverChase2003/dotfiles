@@ -1,8 +1,18 @@
+# session
+sessions/
+# pi
 agent/npm/
 agent/auth.json
 agent/models-store.json
-agent/skills/anthropic/
-sessions/
+# pi-permission-system
 agent/extensions/pi-permission-system/logs/
-agent/skills/
-
+## mcp
+agent/mcp-cache.json
+agent/mcp-onboarding.json
+## web search
+agent/web-search-cache
+## skills
+agent/skills/*
+!agent/skills/my
+## other
+agent/state/
