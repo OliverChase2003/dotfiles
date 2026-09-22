@@ -8,6 +8,8 @@
 	br = branch
 	lg = log --graph --decorate
 	df = diff
+	ph = push
+	pu = pull
 
 [init]
 	defaultBranch = main
