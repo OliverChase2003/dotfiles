@@ -1,0 +1,139 @@
+{
+	"palettePreset": "custom",
+	"palette": {
+		"model": {
+			"fg": "#1e1e2e",
+			"bg": "#b4befe"
+		},
+		"thinking": {
+			"fg": "#1e1e2e",
+			"bg": "#b4befe"
+		},
+		"context": {
+			"fg": "#1e1e2e",
+			"bg": "#f5c2e7"
+		},
+		"cwd": {
+			"fg": "#1e1e2e",
+			"bg": "#a6e3a1"
+		},
+		"branch": {
+			"fg": "#cdd6f4",
+			"bg": "#363a4f"
+		},
+		"tools": {
+			"fg": "#1e1e2e",
+			"bg": "#f9e2af"
+		},
+		"brand": {
+			"fg": "#1e1e2e",
+			"bg": "#fab387"
+		},
+		"provider": {
+			"fg": "#1e1e2e",
+			"bg": "#eba0ac"
+		},
+		"tokens": {
+			"fg": "#1e1e2e",
+			"bg": "#f38ba8"
+		},
+		"cache": {
+			"fg": "#1e1e2e",
+			"bg": "#f5c2e7"
+		},
+		"cost": {
+			"fg": "#1e1e2e",
+			"bg": "#cba6f7"
+		},
+		"time": {
+			"fg": "#1e1e2e",
+			"bg": "#b4befe"
+		},
+		"turn": {
+			"fg": "#1e1e2e",
+			"bg": "#f2cdcd"
+		}
+	},
+	"density": "compact",
+	"separator": "none",
+	"segments": [
+		"model",
+		"thinking",
+		"context",
+		"cwd",
+		"branch",
+		"tools"
+	],
+	"segmentText": {
+		"brand": {
+			"prefix": "",
+			"suffix": ""
+		},
+		"provider": {
+			"prefix": "  ",
+			"suffix": ""
+		},
+		"model": {
+			"prefix": "",
+			"suffix": "",
+			"truncationLength": 36,
+			"truncationSymbol": "…",
+			"truncationDirection": "start"
+		},
+		"thinking": {
+			"prefix": "[thinking: ",
+			"suffix": "]"
+		},
+		"cwd": {
+			"prefix": "  ",
+			"suffix": ""
+		},
+		"branch": {
+			"prefix": "  ",
+			"suffix": ""
+		},
+		"tools": {
+			"prefix": "  ",
+			"suffix": ""
+		},
+		"context": {
+			"prefix": "  ",
+			"suffix": ""
+		},
+		"tokens": {
+			"prefix": "  ",
+			"suffix": ""
+		},
+		"cache": {
+			"prefix": "  ",
+			"suffix": ""
+		},
+		"cost": {
+			"prefix": "",
+			"suffix": "$"
+		},
+		"time": {
+			"prefix": " ",
+			"suffix": ""
+		},
+		"turn": {
+			"prefix": " ",
+			"suffix": ""
+		}
+	},
+	"extensionStatusIcons": {
+		"accounts": "👤",
+		"caffeinate": "💊",
+		"chrome-devtools": "🌐",
+		"firecrawl": "🔥",
+		"github-pr": "🔎",
+		"goal": "🎯",
+		"google-genai": "✨",
+		"lsp": "🧰",
+		"plan-mode": "📝",
+		"retry": "🔁",
+		"subagents": "🧑‍🤝‍🧑",
+		"sync": "🔄",
+		"usage": "📊"
+	}
+}

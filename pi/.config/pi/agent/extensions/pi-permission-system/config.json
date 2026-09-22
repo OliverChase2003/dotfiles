@@ -1,24 +1,31 @@
 {
 	"permission": {
 		"*": "allow",
-
-		"external_directory": "allow",
-
+		"external_directory_read": {
+			"*": "allow"
+		},
+		"external_directory_write": {
+			"*": "ask"
+		},
 		"read": "allow",
-
 		"grep": "allow",
-
 		"find": "allow",
-
-		"write": "ask",
-
+		"write": "allow",
 		"edit": {
-			"*": "ask",
+			"*": "allow",
 			"*.lock": "deny"
 		},
-
 		"delete": "ask",
-
-		"bash": "allow"
+		"bash": "allow",
+		"path": {
+			"*": "allow",
+			"*.env": "deny",
+			"*.env.*": "deny",
+			"*.env.example": "allow",
+			"~/.ssh/*": "deny",
+			"**/.git-credentials": "deny",
+			"**/.npmrc": "deny",
+			"~/.dotfiles/": "ask"
+		}
 	}
 }

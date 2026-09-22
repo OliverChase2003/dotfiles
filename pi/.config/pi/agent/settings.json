@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.84.3",
+  "lastChangelogVersion": "0.85.1",
   "theme": "catppuccin-tui-mocha",
   "defaultProvider": "deepseek",
   "defaultModel": "deepseek-v4-flash-vision-exp",
@@ -7,11 +7,14 @@
   "externalEditor": "nvim",
   "packages": [
     "npm:pi-catppuccin-tui",
+    "npm:@narumitw/pi-statusline",
     "npm:@gotgenes/pi-subagents",
     "npm:@gotgenes/pi-permission-system",
-    "npm:pi-wtf",
-    "npm:@narumitw/pi-btw",
+    "npm:pi-web-access",
+    "npm:pi-observational-memory",
+    "npm:pi-workspace-history",
     "npm:pi-nvim-bridge"
   ],
-  "enableSkillCommands": false
+  "enableSkillCommands": false,
+  "hideThinkingBlock": false
 }
