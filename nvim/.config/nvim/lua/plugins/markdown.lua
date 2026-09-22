@@ -96,7 +96,7 @@ local imagenvim_opt = {
 local function vimpack_setup_render_markeown()
 	vim.pack.add({
 		{ src = "https://github.com/3rd/image.nvim" },
-		{ src = "https://github.com/MeanderingProgrammer/render-markdown.nvim" }
+		{ src = "https://github.com/MeanderingProgrammer/render-markdown.nvim" },
 	})
 
 	vim.api.nvim_create_autocmd("FileType", {
@@ -121,4 +121,3 @@ end
 
 -- keymaps
 vim.keymap.set('n', '<leader>md', '<CMD>RenderMarkdown toggle<CR>', { desc = 'Toggle render markdown' })
-

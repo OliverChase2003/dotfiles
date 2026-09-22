@@ -28,6 +28,8 @@ vim.keymap.set('n', '<leader>tc',
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Quit terminal mode' })
 vim.keymap.set('t', '<C-e>', '<C-\\><C-n>', { desc = 'Quit terminal mode' })
 
+-- write
+vim.keymap.set('n', '<leader>ww', '<CMD>w', { desc = 'Write' })
 -- quit
 vim.keymap.set('n', '<leader>qq', '<CMD>qa!<CR>', { desc = 'Quit all' })
 -- restart

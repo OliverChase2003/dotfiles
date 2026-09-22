@@ -89,7 +89,6 @@ local function config_alpha_dashboard(dashboard)
 			"                                                     ",
 			"                                                     ",
 			"                                                     ",
-			"                                                     ",
 			"  ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗ ",
 			"  ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║ ",
 			"  ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║ ",
@@ -100,7 +99,6 @@ local function config_alpha_dashboard(dashboard)
 		}
 	elseif height > 30 and height <= 33 then
 		dashboard.section.header.val = {
-			"                                                     ",
 			"                                                     ",
 			"                                                     ",
 			"                                                     ",
@@ -149,10 +147,10 @@ local function vimpack_setup_look()
 	-- lualine
 	require("lualine").setup(lualine_opt)
 	-- alpha
-	local Dashboard = require("alpha.themes.dashboard")
-	config_alpha_dashboard(Dashboard)
+	-- local Dashboard = require("alpha.themes.dashboard")
+	-- config_alpha_dashboard(Dashboard)
 
-	require('alpha').setup(Dashboard.config) -- use dashboard theme to startup
+	-- require('alpha').setup(Dashboard.config) -- use dashboard theme to startup
 end
 
 local function lazy_setup_look()

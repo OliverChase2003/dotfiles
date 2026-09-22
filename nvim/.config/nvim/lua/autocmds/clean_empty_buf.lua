@@ -1,4 +1,3 @@
-local cleanup_group = vim.api.nvim_create_augroup('CleanupEmptyNoNameBuffer', { clear = true })
 local startup_finished = false
 
 vim.api.nvim_create_autocmd('VimEnter', {
@@ -32,7 +31,7 @@ local function is_empty_no_name_buffer(bufnr)
 end
 
 vim.api.nvim_create_autocmd('BufEnter', {
-	group = cleanup_group,
+	group = vim.api.nvim_create_augroup('CleanupEmptyNoNameBuffer', { clear = true }),
 	callback = function(args)
 		local current = args.buf
 		if vim.api.nvim_buf_get_name(current) == '' and vim.bo[current].buftype == '' then

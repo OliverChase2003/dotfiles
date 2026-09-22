@@ -7,7 +7,7 @@ local oil_opt = {
 	},
 	win_options = {
 		wrap = false,
-		cursorcolumn = true,
+		cursorcolumn = false,
 		signcolumn = "no",
 		foldcolumn = "0",
 		spell = false,
@@ -85,8 +85,8 @@ local oil_opt = {
 		['L'] = { 'actions.select', mode = 'n' },
 		['H'] = { 'actions.parent', mode = 'n' },
 		-- open vertical / horizontal / new tab
-		['v'] = { 'actions.select', opts = { vertical = true } },
-		['c'] = { 'actions.select', opts = { horizontal = true } },
+		['c'] = { 'actions.select', opts = { vertical = true } },
+		['v'] = { 'actions.select', opts = { horizontal = true } },
 		['t'] = { 'actions.select', opts = { tab = true } },
 		-- close
 		['<leader>e'] = { 'actions.close', mode = 'n' },
@@ -159,9 +159,11 @@ local function vimpack_setup_file()
 	})
 	require('oil').setup(oil_opt)
 	require("oil-git").setup(oilgit_opt)
+
 	require('telescope').setup(telescope_opt)
 	local Builtin = require('telescope.builtin')
 	config_telescope_keymap(Builtin)
+
 end
 
 local function lazy_setup_file()
@@ -183,3 +185,4 @@ vim.keymap.set('n', '<leader>fe', function()
 	require("oil").open()
 end
 , { desc = 'Oil' })
+

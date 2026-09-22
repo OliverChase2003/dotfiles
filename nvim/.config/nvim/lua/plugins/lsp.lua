@@ -36,11 +36,13 @@ vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'Go to definition' })
 vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { desc = 'Go to declaration' })
 vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { desc = 'Go to implementation' })
 vim.keymap.set('n', 'gr', vim.lsp.buf.references, { desc = 'Go to references' })
+
 vim.keymap.set('n', 'gO', function()
 	vim.lsp.buf.document_symbol({
 		loclist = true,
 	})
 end, { desc = 'Go to document symbol' })
+
 vim.keymap.set('n', 'K',
 	function()
 		vim.lsp.buf.hover({
@@ -58,4 +60,4 @@ vim.keymap.set("n", "<leader>ih",
 	{ desc = 'Toggle inlay hint' }
 )
 
-vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = 'Rename varible'})
+vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = 'Rename variable'})

@@ -89,7 +89,8 @@ end
 
 local function vimpack_setup_blink()
 	vim.pack.add({
-		{ src = 'https://github.com/saghen/blink.cmp', version = 'v1' }
+		-- { src = 'https://github.com/saghen/blink.cmp', version = 'v1' }
+		{ src = 'https://github.com/saghen/blink.cmp' }
 	})
 
 	vim.api.nvim_create_autocmd({ "InsertEnter", "CmdlineEnter" }, {
@@ -104,9 +105,24 @@ end
 local function lazy_setup_blink()
 end
 
+local function vimpack_setup_fade()
+	vim.pack.add({
+		{ src = 'https://github.com/Fau818/fade.nvim' }
+	})
+
+	vim.api.nvim_create_autocmd({ "InsertEnter", "CmdlineEnter" }, {
+		group = vim.api.nvim_create_augroup("SetupFade", { clear = true }),
+		once = true,
+		callback = function()
+			require('fade').setup(blink_opt)
+		end
+	})
+end
+
 if vim.fn.has("nvim-0.12") == 1 then
 	vimpack_setup_autopairs()
 	vimpack_setup_blink()
+	vimpack_setup_fade()
 else
 	lazy_setup_autopairs()
 	lazy_setup_blink()
