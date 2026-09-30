@@ -1,5 +1,5 @@
-## detect if launched by nautilus "open terminal here"
-nautilus_spawned() {
+## tmux auto open
+is_nautilus_spawned() {
 	local pid=$$ ppid comm
 	while [ "$pid" -gt 1 ]; do
 		read -r ppid comm < <(ps -o ppid= -o comm= -p "$pid" 2>/dev/null) || break
@@ -9,13 +9,18 @@ nautilus_spawned() {
 	return 1
 }
 
-## open tmux automatically
-## tmux alias is in env.sh above, specify the T-mux config path ~/.config/tmux/tmux.conf
-## dont let it above tmux
 if [ -x /usr/bin/tmux ] && [ -n "$PS1" ] && [ -z "$TMUX" ]; then
-	if nautilus_spawned; then
+	if is_nautilus_spawned; then
+		## launched by nautilus "open terminal here"
 		:
 	else
+		## launcher by gnome, other DE or WM
 		tmux attach || tmux new
 	fi
 fi
+
+## zoxide
+if command -v zoxide > /dev/null 2>&1; then
+	eval "$(zoxide init bash)"
+fi
+

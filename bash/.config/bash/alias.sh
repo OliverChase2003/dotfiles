@@ -1,4 +1,4 @@
-# cd
+# cd && zoxide
 alias ...="../.."
 alias ....="../../.."
 alias .....="../../../.."
@@ -8,11 +8,14 @@ alias .2="../.."
 alias .3="../../.."
 alias .4="../../../.."
 alias .5="../../../../.."
+if command -v zoxide > /dev/null 2>&1; then
+	alias z="zoxide"
+fi
 # ls && eza
 if command -v eza > /dev/null 2>&1; then
-	alias l="eza --group-directories-first --git"
-	alias ll="eza -l --group-directories-first --git"
-	alias la="eza -la --group-directories-first --git"
+	alias l="eza --group-directories-first --git --icons=auto"
+	alias ll="eza -l --group-directories-first --git --icons=auto"
+	alias la="eza -la --group-directories-first --git --icons=auto"
 	alias lt="eza --tree --level=2 --group-directories-first --git"
 	alias lt1="eza --tree --level=2 --group-directories-first --git"
 	alias lt2="eza --tree --level=3 --group-directories-first --git"
@@ -42,6 +45,14 @@ if command -v procs > /dev/null 2>&1; then
 	alias psa="procs"
 	alias pst="procs --tree"
 	alias psw="procs --watch"
+fi
+# df && duf
+if command -v duf > /dev/null 2>&1; then
+	alias df="duf"
+fi
+# du && dust
+if command -v dust > /dev/null 2>&1; then
+	alias du="dust"
 fi
 # tmux
 alias tmux="tmux -f ~/.config/tmux/tmux.conf"
