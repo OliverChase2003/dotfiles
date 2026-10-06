@@ -1,0 +1,283 @@
+keybinds clear-defaults=true {
+	normal {
+		// mode switch
+		bind "ctrl space" { SwitchToMode "tmux"; }
+		bind "alt g" { SwitchToMode "locked"; }
+		bind "alt p" { SwitchToMode "pane"; }
+		bind "alt t" { SwitchToMode "tab"; }
+		bind "alt r" { SwitchToMode "resize"; }
+		bind "alt f" { SwitchToMode "scroll"; }
+		bind "alt m" { SwitchToMode "move"; }
+		bind "alt s" { SwitchToMode "session"; }
+	}
+	locked {
+		// mode
+		bind "alt g" { SwitchToMode "normal"; }
+	}
+	tmux {
+		// focus tab
+		bind "," { GoToPreviousTab; SwitchToMode "normal"; }
+		bind "." { GoToNextTab; SwitchToMode "normal"; }
+		bind "<" { GoToPreviousTab; }
+		bind ">" { GoToNextTab; }
+		bind "1" { GoToTab 1; SwitchToMode "normal"; }
+		bind "2" { GoToTab 2; SwitchToMode "normal"; }
+		bind "3" { GoToTab 3; SwitchToMode "normal"; }
+		bind "4" { GoToTab 4; SwitchToMode "normal"; }
+		bind "5" { GoToTab 5; SwitchToMode "normal"; }
+		bind "6" { GoToTab 6; SwitchToMode "normal"; }
+		bind "7" { GoToTab 7; SwitchToMode "normal"; }
+		bind "8" { GoToTab 8; SwitchToMode "normal"; }
+		bind "9" { GoToTab 9; SwitchToMode "normal"; }
+		bind "tab" { ToggleTab; }
+		// focus pane
+		bind "h" { MoveFocusOrTab "left"; SwitchToMode "normal"; }
+		bind "j" { MoveFocus "down"; SwitchToMode "normal"; }
+		bind "k" { MoveFocus "up"; SwitchToMode "normal"; }
+		bind "l" { MoveFocusOrTab "right"; SwitchToMode "normal"; }
+		bind "H" { MoveFocusOrTab "left"; }
+		bind "J" { MoveFocus "down"; }
+		bind "K" { MoveFocus "up"; }
+		bind "L" { MoveFocusOrTab "right"; }
+		// tab
+		bind "n" { NewTab { cwd "~"; }; SwitchToMode "normal"; }
+		bind "N" { NewTab; SwitchToMode "normal"; }
+		bind "r" { SwitchToMode "renametab"; TabNameInput 0; }
+		bind "x" { CloseTab; SwitchToMode "normal"; }
+		// pane
+		bind "c" { NewPane "right"; SwitchToMode "normal"; }
+		bind "v" { NewPane "down"; SwitchToMode "normal"; }
+		bind "R" { SwitchToMode "renamepane"; PaneNameInput 0; }
+		bind "f" { ToggleFocusFullscreen; SwitchToMode "normal"; }
+		bind "w" { ToggleFloatingPanes; SwitchToMode "normal"; }
+		bind "d" { CloseFocus; SwitchToMode "normal"; }
+		// mode 
+		bind "ctrl space" { SwitchToMode "normal"; }
+		bind "esc" { SwitchToMode "normal"; }
+	}
+	pane {
+		bind "r" { SwitchToMode "renamepane"; TabNameInput 0; }
+		// mode
+		bind "alt p" { SwitchToMode "normal"; }
+		bind "ctrl space" { SwitchToMode "tmux"; }
+		bind "esc" { SwitchToMode "normal"; }
+		bind "ctrl c" { SwitchToMode "normal"; }
+	}
+	tab {
+		bind "r" { SwitchToMode "renametab"; TabNameInput 0; }
+		bind "s" { ToggleActiveSyncTab; SwitchToMode "normal"; }
+		// mode
+		bind "alt t" { SwitchToMode "normal"; }
+		bind "ctrl space" { SwitchToMode "tmux"; }
+		bind "esc" { SwitchToMode "normal"; }
+		bind "ctrl c" { SwitchToMode "normal"; }
+	}
+	resize {
+		bind "h" { Resize "Increase left"; }
+		bind "j" { Resize "Increase down"; }
+		bind "k" { Resize "Increase up"; }
+		bind "l" { Resize "Increase right"; }
+		// mode
+		bind "alt r" { SwitchToMode "normal"; }
+		bind "ctrl space" { SwitchToMode "tmux"; }
+		bind "esc" { SwitchToMode "normal"; }
+		bind "ctrl c" { SwitchToMode "normal"; }
+	}
+	move {
+		// pane
+		bind "h" { MovePane "left"; }
+		bind "j" { MovePane "down"; }
+		bind "k" { MovePane "up"; }
+		bind "l" { MovePane "right"; }
+		// tab
+		bind "," { MoveTab "left"; }
+		bind "." { MoveTab "right"; }
+		// mode
+		bind "alt m" { SwitchToMode "normal"; }
+		bind "ctrl space" { SwitchToMode "tmux"; }
+		bind "esc" { SwitchToMode "normal"; }
+		bind "ctrl c" { SwitchToMode "normal"; }
+	}
+	scroll {
+		// scroll
+		bind "j" { ScrollDown; }
+		bind "k" { ScrollUp; }
+		bind "K" { HalfPageScrollUp; }
+		bind "J" { HalfPageScrollDown; }
+		// navigate
+        bind "p" { ScrollToPreviousPrompt; }
+        bind "n" { ScrollToNextPrompt; }
+		// select
+		bind "v" { SelectCommandAtScrollPosition; }
+		// yank
+		bind "y" { Copy; SwitchToMode "normal"; }
+		bind "c" { CopyLastCommandOutput; SwitchToMode "normal"; }
+		bind "e" { EditScrollback; SwitchToMode "normal"; }
+		// mode
+		bind "/" { SwitchToMode "EnterSearch"; SearchInput 0; } // to search mode
+		bind "alt f" { SwitchToMode "normal"; }
+		bind "ctrl space" { SwitchToMode "tmux"; }
+		bind "esc" { ScrollToBottom; SwitchToMode "normal"; }
+		bind "ctrl c" { ScrollToBottom; SwitchToMode "normal"; }
+	}
+	search {
+		// scroll
+		bind "j" { ScrollDown; }
+		bind "k" { ScrollUp; }
+		bind "K" { HalfPageScrollUp; }
+		bind "J" { HalfPageScrollDown; }
+		// navigate
+		bind "n" { Search "down"; }
+		bind "p" { Search "up"; }
+		// option
+		bind "c" { SearchToggleOption "CaseSensitivity"; }
+		bind "o" { SearchToggleOption "WholeWord"; }
+		bind "w" { SearchToggleOption "Wrap"; }
+		// mode
+		bind "esc" { ScrollToBottom; SwitchToMode "scroll"; }
+		bind "ctrl c" { ScrollToBottom; SwitchToMode "scroll"; }
+	}
+	session {
+		bind "p" {
+			LaunchOrFocusPlugin "plugin-manager" {
+				floating true
+				move_to_focused_tab true
+			}
+			SwitchToMode "normal"
+		}
+		bind "w" {
+			LaunchOrFocusPlugin "session-manager" {
+				floating true
+				move_to_focused_tab true
+			}
+			SwitchToMode "normal"
+		}
+	}
+	entersearch {
+		bind "esc" { SwitchToMode "scroll"; }
+		bind "ctrl c" { SwitchToMode "scroll"; }
+		bind "enter" { SwitchToMode "search"; }
+	}
+	renametab {
+		bind "esc" { UndoRenameTab; SwitchToMode "normal"; }
+		bind "ctrl c" { UndoRenameTab; SwitchToMode "normal"; }
+		bind "enter" { SwitchToMode "normal"; }
+	}
+	renamepane {
+		bind "esc" { UndoRenamePane; SwitchToMode "normal"; }
+		bind "ctrl c" { UndoRenamePane; SwitchToMode "normal"; }
+		bind "enter" { SwitchToMode "normal"; }
+	}
+}
+
+plugins {
+	compact-bar location="zellij:compact-bar"
+	plugin-manager location="zellij:plugin-manager"
+	session-manager location="zellij:session-manager"
+}
+
+load_plugins {
+	zellij:link
+}
+
+// Use a simplified UI without special fonts (arrow glyphs)
+// Options:
+//		- true
+//		- false (Default)
+// 
+simplified_ui false
+
+// Choose the theme that is specified in the themes section.
+// Default: default
+// 
+theme "catppuccin-latte"
+
+// Theme to use when the host terminal reports a dark color palette.
+// Requires `theme_light` to also be set; otherwise `theme` is used.
+// 
+theme_dark "catppuccin-mocha"
+
+// Theme to use when the host terminal reports a light color palette.
+// Requires `theme_dark` to also be set; otherwise `theme` is used.
+// 
+theme_light "catppuccin-latte"
+
+// Choose the base input mode of zellij.
+// Default: normal
+// 
+default_mode "normal"
+
+// The name of the default layout to load on startup
+// Default: "default"
+// 
+default_layout "compact"
+
+// The folder in which Zellij will look for layouts(When you need to specify your own layout)
+// (Requires restart)
+// 
+layout_dir "/home/oliver/.config/zellij/layouts"
+
+// The folder in which Zellij will look for themes(When you need to specify your own theme)
+// (Requires restart)
+// 
+// theme_dir "~/.config/zellij/themes"
+
+// Set the pane frame style when pane_frames is enabled
+// Options:
+//		- full
+//   	- titles (default)
+// 
+pane_frame_style "full"
+
+// Choose what to do when zellij receives SIGTERM, SIGINT, SIGQUIT or SIGHUP
+// eg. when terminal window with an active zellij session is closed
+// (Requires restart)
+// Options:
+//		- detach (Default)
+//		- quit
+// 
+on_force_close "quit"
+
+// Provide a command to execute when copying text. The text will be piped to
+// the stdin of the program to perform the copy. This can be used with
+// terminal emulators which do not support the OSC 52 ANSI control sequence
+// that will be used by default if this option is not set.
+// Options:
+//		- xclip -selection clipboard // x11
+//		- wl-copy                    // wayland
+//		- pbcopy                     // osx
+// 
+copy_command "wl-copy"
+
+// Choose the destination for copied text
+// Allows using the primary selection buffer (on x11/wayland) instead of the system clipboard.
+// Does not apply when using copy_command.
+// Options:
+//		- system (default)
+//		- primary
+// 
+copy_clipboard "system"
+
+// Enable automatic copying (and clearing) of selection when releasing mouse
+// Default: true
+// 
+copy_on_select true
+
+// A fixed name to always give the Zellij session.
+// Consider also setting `attach_to_session true,`
+// otherwise this will error if such a session exists.
+// Default: <RANDOM>
+// 
+// session_name "My singleton session"
+
+show_startup_tips false
+
+// The ip address the web server should listen on when it starts
+// Default: "127.0.0.1"
+// (Requires restart)
+web_server_ip "127.0.0.1"
+
+// The port the web server should listen on when it starts
+// Default: 8082
+// (Requires restart)
+web_server_port 8082
