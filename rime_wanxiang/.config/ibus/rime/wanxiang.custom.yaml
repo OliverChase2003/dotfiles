@@ -10,5 +10,12 @@ patch:
         - wanxiang_algebra:/base/自然码     #拼音转双拼码
   key_binder:
     bindings:
-      - {when: always, accept: Shift+space, action: noop}
-
+      # 翻页 , .
+      - { when: has_menu, accept: comma, send: Page_Up }
+      - { when: has_menu, accept: period, send: Page_Down }
+      # Shift 在输入时相当于回车（上屏但不切换中英）
+      - { when: composing, accept: Shift_L, send: Return }
+      - { when: composing, accept: Shift_R, send: Return }
+      # Tab / Shift+Tab 切换光标至下/上一个拼音
+      - { when: composing, accept: Shift+Tab, send: Shift+Left }
+      - { when: composing, accept: Tab, send: Shift+Right }
