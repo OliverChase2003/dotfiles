@@ -11,6 +11,7 @@ opt.ignorecase = true
 opt.smartcase = true
 opt.swapfile = false
 opt.showmode = false
+opt.autoread = true
 opt.exrc = true
 opt.clipboard = "unnamedplus"
 
