@@ -9,15 +9,26 @@ is_nautilus_spawned() {
 	return 1
 }
 
+## check if this terminal spawned by kitty
+is_kitty_spawned() {
+	local comm
+	comm="$(ps -o comm= -p "$PPID" 2>/dev/null)" || return 1
+	[ "$comm" = "kitty" ] && return 0
+	return 1
+}
+
 ## auto launch zellij when open kitty on desktop
 zellij_auto_open() {
 	if command -v zellij >/dev/null 2>&1 && [ -n "$PS1" ] && [ -z "$ZELLIJ" ]; then
 		if is_nautilus_spawned; then
 			## launched by nautilus "open terminal here"
 			:
-		else
-			## launcher by gnome, other DE or WM
+		elif is_kitty_spawned; then
+			## launched by kitty
 			zellij attach --create
+		else
+			## launched by system
+			:
 		fi
 	fi
 }

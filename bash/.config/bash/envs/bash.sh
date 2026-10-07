@@ -1,8 +1,9 @@
 # path
 PATH_ENTRIES=(
-  "$HOME/.local/bin"
   "$HOME/bin"
-  "$HOME/.local/share/cargo/bin"
+  "$HOME/.local/bin"
+  "$HOME/.local/share/cargo/bin"	## cargo
+  "$HOME/.local/share/npm/bin"		## npm
 )
 IFS=: eval 'PATH="${PATH_ENTRIES[*]}:$PATH"'
 
