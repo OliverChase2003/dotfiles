@@ -13,9 +13,9 @@ if command -v zoxide > /dev/null 2>&1; then
 fi
 # ls && eza
 if command -v eza > /dev/null 2>&1; then
-	alias l="eza --group-directories-first --git --icons=auto"
-	alias ll="eza -l --group-directories-first --git --icons=auto"
-	alias la="eza -la --group-directories-first --git --icons=auto"
+	alias l="eza --group-directories-first --git"
+	alias ll="eza -l --group-directories-first --git"
+	alias la="eza -la --group-directories-first --git"
 	alias lt="eza --tree --level=2 --group-directories-first --git"
 	alias lt1="eza --tree --level=2 --group-directories-first --git"
 	alias lt2="eza --tree --level=3 --group-directories-first --git"
