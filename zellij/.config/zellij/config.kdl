@@ -2,17 +2,17 @@ keybinds clear-defaults=true {
 	normal {
 		// mode switch
 		bind "ctrl space" { SwitchToMode "tmux"; }
-		bind "alt g" { SwitchToMode "locked"; }
+		bind "alt /" { SwitchToMode "locked"; }
 		bind "alt p" { SwitchToMode "pane"; }
 		bind "alt t" { SwitchToMode "tab"; }
 		bind "alt r" { SwitchToMode "resize"; }
-		bind "alt f" { SwitchToMode "scroll"; }
+		bind "alt v" { SwitchToMode "scroll"; }
 		bind "alt m" { SwitchToMode "move"; }
 		bind "alt s" { SwitchToMode "session"; }
 	}
 	locked {
 		// mode
-		bind "alt g" { SwitchToMode "normal"; }
+		bind "alt /" { SwitchToMode "normal"; }
 	}
 	tmux {
 		// focus tab
@@ -52,13 +52,12 @@ keybinds clear-defaults=true {
 		bind "w" { ToggleFloatingPanes; SwitchToMode "normal"; }
 		bind "d" { CloseFocus; SwitchToMode "normal"; }
 		// mode 
-		bind "ctrl space" { SwitchToMode "normal"; }
 		bind "esc" { SwitchToMode "normal"; }
+		bind "ctrl c" { SwitchToMode "normal"; }
 	}
 	pane {
 		bind "r" { SwitchToMode "renamepane"; TabNameInput 0; }
 		// mode
-		bind "alt p" { SwitchToMode "normal"; }
 		bind "ctrl space" { SwitchToMode "tmux"; }
 		bind "esc" { SwitchToMode "normal"; }
 		bind "ctrl c" { SwitchToMode "normal"; }
@@ -67,7 +66,6 @@ keybinds clear-defaults=true {
 		bind "r" { SwitchToMode "renametab"; TabNameInput 0; }
 		bind "s" { ToggleActiveSyncTab; SwitchToMode "normal"; }
 		// mode
-		bind "alt t" { SwitchToMode "normal"; }
 		bind "ctrl space" { SwitchToMode "tmux"; }
 		bind "esc" { SwitchToMode "normal"; }
 		bind "ctrl c" { SwitchToMode "normal"; }
@@ -78,7 +76,6 @@ keybinds clear-defaults=true {
 		bind "k" { Resize "Increase up"; }
 		bind "l" { Resize "Increase right"; }
 		// mode
-		bind "alt r" { SwitchToMode "normal"; }
 		bind "ctrl space" { SwitchToMode "tmux"; }
 		bind "esc" { SwitchToMode "normal"; }
 		bind "ctrl c" { SwitchToMode "normal"; }
@@ -93,7 +90,6 @@ keybinds clear-defaults=true {
 		bind "," { MoveTab "left"; }
 		bind "." { MoveTab "right"; }
 		// mode
-		bind "alt m" { SwitchToMode "normal"; }
 		bind "ctrl space" { SwitchToMode "tmux"; }
 		bind "esc" { SwitchToMode "normal"; }
 		bind "ctrl c" { SwitchToMode "normal"; }
@@ -115,7 +111,6 @@ keybinds clear-defaults=true {
 		bind "e" { EditScrollback; SwitchToMode "normal"; }
 		// mode
 		bind "/" { SwitchToMode "EnterSearch"; SearchInput 0; } // to search mode
-		bind "alt f" { SwitchToMode "normal"; }
 		bind "ctrl space" { SwitchToMode "tmux"; }
 		bind "esc" { ScrollToBottom; SwitchToMode "normal"; }
 		bind "ctrl c" { ScrollToBottom; SwitchToMode "normal"; }
@@ -138,11 +133,8 @@ keybinds clear-defaults=true {
 		bind "ctrl c" { ScrollToBottom; SwitchToMode "scroll"; }
 	}
 	session {
-		bind "p" {
-			LaunchOrFocusPlugin "plugin-manager" {
-				floating true
-				move_to_focused_tab true
-			}
+		bind "d" {
+			Detach
 			SwitchToMode "normal"
 		}
 		bind "w" {
@@ -152,6 +144,9 @@ keybinds clear-defaults=true {
 			}
 			SwitchToMode "normal"
 		}
+		// mode
+		bind "esc" { ScrollToBottom; SwitchToMode "normal"; }
+		bind "ctrl c" { ScrollToBottom; SwitchToMode "normal"; }
 	}
 	entersearch {
 		bind "esc" { SwitchToMode "scroll"; }
@@ -180,17 +175,12 @@ load_plugins {
 	zellij:link
 }
 
-// Use a simplified UI without special fonts (arrow glyphs)
-// Options:
-//		- true
-//		- false (Default)
-// 
-simplified_ui false
+show_startup_tips false
 
 // Choose the theme that is specified in the themes section.
 // Default: default
 // 
-theme "catppuccin-latte"
+theme "catppuccin-mocha"
 
 // Theme to use when the host terminal reports a dark color palette.
 // Requires `theme_light` to also be set; otherwise `theme` is used.
@@ -202,20 +192,15 @@ theme_dark "catppuccin-mocha"
 // 
 theme_light "catppuccin-latte"
 
-// Choose the base input mode of zellij.
-// Default: normal
-// 
-default_mode "normal"
-
 // The name of the default layout to load on startup
 // Default: "default"
 // 
-default_layout "compact"
+default_layout "default"
 
 // The folder in which Zellij will look for layouts(When you need to specify your own layout)
 // (Requires restart)
 // 
-layout_dir "/home/oliver/.config/zellij/layouts"
+layout_dir "/home/oliver/.config/zellij/layouts/"
 
 // The folder in which Zellij will look for themes(When you need to specify your own theme)
 // (Requires restart)
@@ -270,7 +255,14 @@ copy_on_select true
 // 
 // session_name "My singleton session"
 
-show_startup_tips false
+// Whether sessions should be serialized to the cache folder
+// (including their tabs/panes, cwds and running commands)
+// so that they can later be resurrected
+// (Requires restart)
+// Options:
+//   - true (default)
+//   - false
+session_serialization false
 
 // The ip address the web server should listen on when it starts
 // Default: "127.0.0.1"

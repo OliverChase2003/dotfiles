@@ -52,7 +52,10 @@ zoxide_inject() {
 }
 
 zellij_auto_open
+unset -f zellij_auto_open 
 
 kitty_integration_in_zellij 
+unset -f kitty_integration_in_zellij 
 
 zoxide_inject 
+unset -f zoxide_inject 

@@ -1,16 +1,12 @@
 {
-  "lastChangelogVersion": "0.86.1",
-  "theme": "catppuccin-tui-mocha",
+  "lastChangelogVersion": "1.1.0",
+  "theme": "system",
   "externalEditor": "nvim",
   "packages": [
-    "npm:pi-catppuccin-tui",
     "npm:@gotgenes/pi-subagents",
     "npm:@gotgenes/pi-permission-system",
     "npm:pi-web-access",
-    "npm:pi-observational-memory",
-    "npm:pi-workspace-history",
-    "npm:pi-nvim-bridge",
-    "npm:pi-mcp-adapter"
+    "npm:pi-vim"
   ],
   "enableSkillCommands": false,
   "hideThinkingBlock": false

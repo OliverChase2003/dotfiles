@@ -5,7 +5,8 @@
 			"*": "allow"
 		},
 		"external_directory_write": {
-			"*": "ask"
+			"*": "ask",
+			"/tmp": "allow"
 		},
 		"read": "allow",
 		"grep": "allow",
@@ -22,6 +23,7 @@
 			"*.env": "deny",
 			"*.env.*": "deny",
 			"*.env.example": "allow",
+			"/tmp": "allow",
 			"~/.ssh/*": "deny",
 			"**/.git-credentials": "deny",
 			"**/.npmrc": "deny",

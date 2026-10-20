@@ -11,15 +11,17 @@ PICTURES=$HOME/pictures/
 VIDEOS=$HOME/videos/
 
 BIN=$HOME/.local/bin/
-APPS=$HOME/.local/share/apps/
+CONFIG=$HOME/.config/
+DATA=$HOME/.local/
+CACHE=$HOME/.cache/
+APPS=$HOME/.local/share/apps
 APPIMAGES=$HOME/.local/share/appimages/
 
 RUSTUP=$HOME/.local/share/rustup/
 CARGO=$HOME/.local/share/cargo/
 
 ## user 
-## ./install.sh --user dir
-make_user_dirs() {
+config_xdg() {
 	## generate xdg user dirs config
 	cat > "$HOME/.config/user-dirs.dirs" <<EOF
 XDG_DESKTOP_DIR="${DESKTOP%/}"
@@ -33,7 +35,7 @@ XDG_VIDEOS_DIR="${VIDEOS%/}"
 EOF
 }
 
-config_usr_dir() {
+make_dir() {
 	mkdir -p \
 		$DESKTOP \
 		$DOWNLOAD \
@@ -43,15 +45,18 @@ config_usr_dir() {
 		$MUSIC \
 		$PICTURES \
 		$VIDEOS \
-		$HOME/.config/ \
-		$HOME/.local/ \
-		$HOME/.cache/
-
-	make_user_dirs 
+		$CONFIG \
+		$DATA \
+		$CACHE
 }
 
-## dnf source
-install_rpmfusion() {
+config_user_dirs() {
+	config_xdg
+	make_dir 
+}
+
+## dnf
+dnf_install_rpmfusion() {
 	if [ ! -f /etc/yum.repos.d/rpmfusion-free.repo ]; then
 		sudo dnf install -y \
 			"https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
@@ -59,11 +64,7 @@ install_rpmfusion() {
 	fi
 }
 
-install_workstation_source() {
-	sudo dnf install -y fedora-workstation-repositories
-}
-
-backup_origin_source() {
+dnf_backup_origin_source() {
 	sudo cp /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/origin-fedora.repo.bak
 	sudo cp /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/origin-fedora-updates.repo.bak
 	for f in /etc/yum.repos.d/rpmfusion*.repo; do
@@ -72,7 +73,7 @@ backup_origin_source() {
 	done
 }
 
-add_tsinghua_source() {
+dnf_add_tsinghua_source() {
 	for f in \
 		/etc/yum.repos.d/fedora.repo \
 		/etc/yum.repos.d/fedora-updates.repo
@@ -95,7 +96,7 @@ add_tsinghua_source() {
 	done
 }
 
-add_ustc_source() {
+dnf_add_ustc_source() {
 	for f in \
 		/etc/yum.repos.d/fedora.repo \
 		/etc/yum.repos.d/fedora-updates.repo
@@ -119,7 +120,7 @@ add_ustc_source() {
 }
 
 ## ./install.sh --source tsinghua 
-change_tsinghua_source() {
+dnf_change_tsinghua_source() {
 	for f in /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/rpmfusion*.repo; do
 		[ -f "$f" ] || continue
 		sudo cp "/etc/yum.repos.d/tsinghua-$(basename "$f").bak" "$f"
@@ -127,7 +128,7 @@ change_tsinghua_source() {
 }
 
 ## ./install.sh --source ustc 
-change_ustc_source() {
+dnf_change_ustc_source() {
 	for f in /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/rpmfusion*.repo; do
 		[ -f "$f" ] || continue
 		sudo cp "/etc/yum.repos.d/ustc-$(basename "$f").bak" "$f"
@@ -135,7 +136,7 @@ change_ustc_source() {
 }
 
 ## ./install.sh --source origin
-change_origin_source() {
+dnf_change_origin_source() {
 	for f in /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/rpmfusion*.repo; do
 		[ -f "$f" ] || continue
 		sudo cp "/etc/yum.repos.d/origin-$(basename "$f").bak" "$f"
@@ -143,12 +144,43 @@ change_origin_source() {
 }
 
 ## ./install.sh --source config
-config_dnf_source() {
-	install_rpmfusion
-	install_workstation_source 
-	backup_origin_source 
-	add_tsinghua_source 
-	add_ustc_source 
+dnf_config_source() {
+	dnf_install_rpmfusion
+	dnf_backup_origin_source 
+	dnf_add_tsinghua_source 
+	dnf_add_ustc_source 
+}
+
+## flatpak
+flatpak_add_flathub_source() {
+	if [ ! -f /usr/bin/flatpak ]; then
+		return 1
+	fi
+	flatpak --user remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+}
+
+flatpak_change_sjtu_source() {
+	if [ ! -f /usr/bin/flatpak ]; then
+		return 1
+	fi
+	flatpak --user remote-modify flathub --url=https://mirror.sjtu.edu.cn/flathub
+	flatpak --user update --appstream
+}
+
+flatpak_change_origin_source() {
+	if [ ! -f /usr/bin/flatpak ]; then
+		return 1
+	fi
+	flatpak --user remote-modify flathub --url=https://dl.flathub.org/repo
+	flatpak --user update --appstream
+}
+
+config_flatpak_source() {
+	if [ -f /usr/bin/flatpak ]; then
+		return 1
+	fi
+
+	flatpak_add_flathub_source
 }
 
 ## toolchain
@@ -168,7 +200,6 @@ install_py_toolchain() {
 		python3 \
 		python3-devel \
 		python3-pip
-
 }
 
 install_node_toolchain() {
@@ -185,13 +216,23 @@ install_jvav_toolchain() {
 install_tui_apps() {
 	sudo dnf install -y \
 		tmux \
-		nvim \
 		fastfetch \
+		bat \
+		eza \
+		fd \
+		ripgrep \
 		fzf \
-		gh
+		procs
+
+	## enable yazi copr
+	sudo dnf copr enable lihaohong/yazi -y
+
+	sudo dnf install -y \
+		nvim \
+		yazi \
+		gh 
 }
 
-## ./install.sh --toolchain
 install_toolchain() {
 	install_c_toolchain 
 	install_rs_toolchain 
@@ -264,7 +305,6 @@ check_dkms_signed() {
 	return 1
 }
 
-## ./install.sh --driver dkms
 sb_sign_dkms() {
     sudo dnf install -y \
         dkms \
@@ -282,7 +322,6 @@ sb_sign_dkms() {
 	sudo mokutil --list-new
 }
 
-## ./install.sh --driver nvidia
 install_nvidia() {
 	if ! check_akmod_signed; then
 		echo "akmod mok is not enrolled, skip"
@@ -300,11 +339,8 @@ install_nvidia() {
 	sudo dracut --force
 }
 
-## desktop
-### gnome
-## ./install.sh --desktop gnome
-install_gnome_desktop() {
-	exclude_pkgs=(
+## 多余的 gnome app：安装 gnome-desktop 时排除，也用于从 workstation 移除
+exclude_pkgs=(
 		gnome-boxes
 		gnome-connections
 		gnome-software
@@ -322,6 +358,7 @@ install_gnome_desktop() {
 		gnome-clocks
 		gnome-color-manager
 		gnome-font-viewer
+		gnome-initial-setup
 		loupe
 		sushi
 		snapshot
@@ -342,6 +379,8 @@ install_gnome_desktop() {
 		ptyxis
 	)
 
+## desktop
+install_gnome_desktop() {
 	exclude_string=$(
 		IFS=,
 		echo "${exclude_pkgs[*]}"
@@ -364,9 +403,7 @@ install_gnome_desktop() {
 	sudo dnf install -y \
 		kitty \
 		gnome-extensions-app \
-		gnome-tweaks 
-		gthumb \
-		celluloid \
+		gnome-tweaks \
 		ibus-rime
 	
 	## xdg-terminal-exec
@@ -378,14 +415,32 @@ install_gnome_desktop() {
 		nautilus-open-any-terminal
 }
 
-## ./install.sh --desktop gext
+remove_from_workstation() {
+	local installed=() pkg
+	for pkg in "${exclude_pkgs[@]}"; do
+		rpm -q "$pkg" >/dev/null 2>&1 && installed+=("$pkg")
+	done
+	(( ${#installed[@]} )) || { echo "没有需要移除的多余 gnome app"; return 0; }
+	sudo dnf remove -y "${installed[@]}"
+}
+
 gext_path=./gnome/ext_list.txt
 
 install_gext() {
-	## install gext
-	pip install gnome-extensions-cli
+	if ! command -v pip > /dev/null 2>&1; then
+		return 1
+	fi
 
-	## install extensions
+	if ! command -v gext > /dev/null 2>&1; then
+		return 1
+	fi
+
+	## check ext list 
+	if [ ! -f "$gext_path" ]; then
+		echo no gext backup in $gext_path
+		return 1
+	fi
+
 	while read -r ext; do
 		[ -z "$ext" ] && continue
 		echo "installing extension: $ext"
@@ -399,34 +454,42 @@ backup_gext() {
 	gext list --only-uuid > "$gext_path"
 }
 
-whitesurgtk_url="https://github.com/vinceliuice/WhiteSur-gtk-theme.git"
-gtk_theme="WhiteSur-gtk-theme"
+tahoegtk_url="https://github.com/vinceliuice/MacTahoe-gtk-theme.git"
+
+gtk_theme_url=tahoegtk_url
+gtk_theme="MacTahoe-gtk-theme"
+
 gtk_theme_dir="$HOME/.local/share/themes/"
 
-build_gtk_theme() {
+build_tahoe_gtk_theme() {
 	sh "$APPS/$gtk_theme/install.sh" \
 		--dest $gtk_theme_dir \
 		--opacity normal \
-		--nautilus glassy \
 		--libadwaita \
-		--shell -i fedora -b default -p 60 -h bigger -normal \
-		--round \
-		--darker
-		##--color light \
+		--shell \
+		-i fedora \
+		-panelopacity 60 \
+		-panelheight default \
+		-normal \
+		--darker 
+
+	sh "$APPS/$gtk_theme/tweaks.sh" \
+		-F
+
+	rm ~/.local/share/applications/org.gnome.GTK4ThemeSwitcher.desktop
 }
 
-## ./install.sh --desktop gtk_theme
 gtk_theme() {
 	if [ ! -d "$APPS/$gtk_theme" ]; then
 		git clone "${whitesurgtk_url}" "$APPS/$gtk_theme" --depth 1
 		cd "$APPS/$gtk_theme" || exit 1
 		chmod +x "$APPS/$gtk_theme/install.sh"
 		chmod +x "$APPS/$gtk_theme/tweaks.sh"
-		build_gtk_theme 
+		build_tahoe_gtk_theme 
 	else
 		cd "$APPS/$gtk_theme" || exit 1
-		git pull
-		build_gtk_theme 
+		##git pull
+		build_tahoe_gtk_theme
 	fi
 }
 
@@ -466,21 +529,34 @@ build_qt_theme() {
 		./src/qwhitesurgtkdecorations.cpp
 
 	## compile QT5 version and install
+	qt5_ver=$(qmake-qt5 --version | grep -oP 'Using Qt version \K[0-9]+\.[0-9]+' | tr '.' '-')
 	mkdir build && cd build
 	cmake -DHAS_QT6_SUPPORT=true .. && make
 	sudo cp src/libqwhitesurgtkdecorations.so \
-		/usr/lib64/qt5/plugins/wayland-decoration-client/
+		/usr/lib64/qt5/plugins/wayland-decoration-client/libqwhitesurgtkdecorations.so
 	cd .. && rm build -rf
+
+	## copy to dotfiles dir
+	if [ -r "$HOME/.dotfiles/not_stow/qt/qt5-decor/" ]; then
+		cp src/libqwhitesurgtkdecorations.so \
+			$HOME/.dotfiles/not_stow/qt/qt5-decor/libwhitesur$(qt5_ver)
+	fi
 
 	## compile QT6 version and install
 	mkdir build && cd build
+	qt6_ver=$(qmake6 --version | grep -oP 'Using Qt version \K[0-9]+\.[0-9]+' | tr '.' '-')
 	cmake -DUSE_QT6=true -DHAS_QT6_SUPPORT=true .. && make
 	sudo cp src/libqwhitesurgtkdecorations.so \
-		/usr/lib64/qt6/plugins/wayland-decoration-client/
+		/usr/lib64/qt6/plugins/wayland-decoration-client/libwhitesur.so
 	cd .. && rm build -rf
+
+	## copy to dotfiles dir
+	if [ -r "$HOME/.dotfiles/not_stow/qt/qt6-decor/" ]; then
+		cp src/libqwhitesurgtkdecorations.so \
+			$HOME/.dotfiles/not_stow/qt/qt6-decor/libwhitesur$(qt6_ver)
+	fi
 }
 
-## ./install.sh --desktop qt_theme
 qt_theme() {
 	install_qt_theme_deps 
 	if [ ! -d "$APPS/$qt_theme" ]; then
@@ -494,14 +570,12 @@ qt_theme() {
 	fi
 }
 
-## ./install.sh --desktop icon
 install_icon() {
 	sudo dnf copr enable rivenirvana/morewaita-icon-theme
 	sudo dnf install -y \
 		morewaita-icon-theme
 }
 
-## ./install.sh --desktop font
 install_fonts() {
 	sudo dnf install -y \
 		google-noto-sans-cjk-fonts \
@@ -546,29 +620,11 @@ get_release_from_github() {
 		| xargs -r curl -LO --output-dir "$output_dir"
 }
 
-##./install.sh --apps desktop
+
 install_desktop_app() {
 	:
-	##sudo dnf install -y \
-}
-
-install_appimagelauncher() {
-	## add check here
-	get_release_from_github TheAssassin/AppImageLauncher \
-		"$DOWNLOAD" x86_64 .rpm
-
-	sudo dnf install -y "$DOWNLOAD"/appimagelauncher*x86_64.rpm
-
-	cat > "$HOME/.config/appimagelauncher.cfg" << EOF
-[AppImageLauncher]
-ask_to_move=true
-destination=${APPIMAGES%/}
-enable_daemon=true
-
-[appimagelauncherd]
-%23%20additional_directories_to_watch=~/otherApplications:/even/more/applications
-%23%20monitor_mounted_filesystems=false
-EOF
+	## sudo dnf install -y \
+	## flatpak --user install \
 }
 
 install_appimagetool() {
@@ -598,12 +654,10 @@ install_appimages_env() {
 		fuse-devel \
 		fuse3
 
-	install_appimagelauncher
 	install_appimagetool
 	install_linuxdeploy 
 }
 
-## ./install.sh --apps vm
 install_vm() {
 	sudo dnf install -y \
 		virt-manager \
@@ -615,27 +669,18 @@ install_vm() {
 	sudo usermod -aG libvirt $USER
 }
 
-## ./install.sh --apps games
-install_uu_plugin() {
-	sudo mkdir -p /home/deck/
-	sudo chown /home/deck/
-	sudo firewall-cmd --permanent --add-port=16363/tcp
-
-	curl -s uudeck.com | sudo bash
+start_uu_plugin() {
+	if [ -f /usr/bin/uuplugin]; then
+		sudo firewall-cmd --add-port=16363/tcp
+		sudo systemctl start uuplugin.service
+	fi
 }
 
-remove_uu_plugin() {
-	sudo rm -rf /home/deck
-}
-
-install_games_env() {
-	## steam
-	sudo dnf install -y \
-		steam
-
-	## prismlauncher
-	sudo dnf copr enable g3tchoo/prismlauncher -y
-	sudo dnf install -y prismlauncher
+stop_uu_plugin() {
+	if [ -f /usr/bin/uuplugin]; then
+		sudo systemctl stop uuplugin.service
+		sudo firewall-cmd --remove-port=16363/tcp
+	fi
 }
 
 install_just_talk() {
@@ -650,7 +695,6 @@ install_just_talk() {
 	chmod +x "$BIN"just-talk
 }
 
-## ./install.sh --apps vinput
 install_vinput() {
 	sudo dnf install -y \
 		libXinerama-devel \
@@ -664,124 +708,142 @@ install_vinput() {
 	install_just_talk 
 }
 
-## main entry
-## ./install.sh --source config|tsinghua|ustc|origin
+## ---------- 模块注册表 ----------
+declare -A MOD_FUNC MOD_ARITY MOD_VALUES MOD_SPEC MOD_DESC
+declare -a MOD_ORDER=()
+
+## reg <name> <arity> <values|-> <func> <spec> [desc]
+##   arity  0 = 无值, 1 = 吃一个值
+##   values "-" = 不校验, "a|b|c" = 正则白名单
+reg() {
+	MOD_FUNC[$1]=$4
+	MOD_ARITY[$1]=$2
+	MOD_VALUES[$1]=$3
+	MOD_SPEC[$1]=$5
+	MOD_DESC[$1]=${6:-}
+	MOD_ORDER+=("$1")
+}
+
+reg user      1 "dir"                                             config_usr_dir    "--user <dir>"                                       "create user directories"
+reg source    1 "config|tsinghua|ustc|origin"                     dnf_source_wrapper "--source <config|tsinghua|ustc|origin>"            "rpmfusion + mirror: config/tsinghua/ustc/origin"
+reg toolchain 0 "-"                                               install_toolchain "--toolchain"                                        "install all toolchains"
+reg driver    1 "kextra|akmod|dkms|nvidia"                        driver_wrapper     "--driver <kextra|akmod|dkms|nvidia>"               "kernel modules / mok signing / nvidia"
+reg desktop   1 "gnome|gext|bk_gext|gtk_theme|qt_theme|font|icon|remove" desktop_wrapper    "--desktop <gnome|gext|bk_gext|gtk_theme|qt_theme|font|icon|remove>" "desktop / extensions / themes / fonts / icons / remove gnome apps"
+reg apps      1 "desktop|appimage|vm|games|uu|vinput"             apps_wrapper       "--apps <desktop|appimage|vm|games|uu|vinput>"      "appimage env / vm / games / uu / voice input"
+
+## ---------- 模块分发 ----------
+dnf_source_wrapper() {
+	case "$1" in
+		config)   dnf_config_source ;;
+		tsinghua) dnf_change_tsinghua_source ;;
+		ustc)     dnf_change_ustc_source ;;
+		origin)   dnf_change_origin_source ;;
+	esac
+}
+
+driver_wrapper() {
+	case "$1" in
+		kextra) install_kernel_extra ;;
+		akmod)  sb_sign_akmod ;;
+		dkms)   sb_sign_dkms ;;
+		nvidia) install_nvidia ;;
+	esac
+}
+
+desktop_wrapper() {
+	case "$1" in
+		gnome)     install_gnome_desktop ;;
+		gext)      install_gext ;;
+		bk_gext)   backup_gext ;;
+		gtk_theme) gtk_theme ;;
+		qt_theme)  qt_theme ;;
+		font)      install_fonts ;;
+		icon)      install_icon ;;
+		remove)    remove_from_workstation ;;
+	esac
+}
+
+apps_wrapper() {
+	case "$1" in
+		desktop)  install_desktop_app ;;
+		appimage) install_appimages_env ;;
+		vm)       install_vm ;;
+		games)    install_games_env ;;
+		uu)       install_uu_plugin ;;
+		vinput)   install_vinput ;;
+	esac
+}
+
+## ---------- 参数解析 ----------
+die() { echo "error: $*" >&2; exit 1; }
+
+declare -a QUEUE_NAMES=() QUEUE_VALS=()
+
+## 阶段一：从 $1 起逐个解析并校验，只入队，不改系统状态
+parse_args() {
+	local -a names=() vals=()
+	local i=1 arg name arity val pat
+	while (( i <= $# )); do
+		arg=${!i}
+		[[ $arg == --* ]] || die "多余的参数 '$arg'（选项必须以 -- 开头）"
+		name=${arg#--}
+		[[ -n ${MOD_FUNC[$name]:-} ]] || die "未知选项 '$arg'"
+
+		arity=${MOD_ARITY[$name]}
+		val=""
+		if (( arity > 0 )); then
+			(( i + arity <= $# )) || die "$arg 缺少参数"
+			val=${@:$((i + 1)):arity}
+			pat=${MOD_VALUES[$name]}
+			if [[ $pat != - && ! $val =~ ^($pat)$ ]]; then
+				die "$arg 取值非法：'$val'（合法值：$pat）"
+			fi
+		fi
+
+		names+=("$name")
+		vals+=("$val")
+		(( i += 1 + arity ))
+	done
+
+	(( ${#names[@]} )) || { usage >&2; exit 1; }
+	QUEUE_NAMES=("${names[@]}")
+	QUEUE_VALS=("${vals[@]}")
+}
+
+## 阶段二：按入队顺序执行，任一模块失败即停止
+run_queue() {
+	local idx name fn
+	for idx in "${!QUEUE_NAMES[@]}"; do
+		name=${QUEUE_NAMES[idx]}
+		fn=${MOD_FUNC[$name]}
+		echo "==> $name ${QUEUE_VALS[idx]}"
+		"$fn" "${QUEUE_VALS[idx]}" || return 1
+	done
+}
+
 usage() {
-	cat <<EOF
-usage: $0 [options]
-
-  --user <dir>
-          dir       create user directories (~/downloads, ~/documents, ...)
-
-  --source <config|tsinghua|ustc|origin>
-          config    install rpmfusion & backup origin source
-                    & add tsinghua/ustc mirror
-          tsinghua  switch to tsinghua mirror
-          ustc      switch to ustc mirror
-          origin    restore origin source
-
-  --toolchain     install all toolchains (c/rs/python/node/jvav/tui)
-
-  --driver <kextra|akmod|dkms|nvidia>
-          akmod    enroll akmod signing key to mok
-          dkms     enroll dkms signing key to mok
-          nvidia   install nvidia driver (akmod)
-
-  --desktop <gnome|gext|bk_gext|gtk_theme|qt_theme|font|icon>
-          gnome     install gnome desktop (minimal)
-          gext      install gnome extensions cli
-          bk_gext   backup installed gnome extensions to $gext_path
-          gtk_theme install WhiteSur gtk theme
-          qt_theme  install qt theme deps
-          font      install fonts (noto/source-han/nerd)
-          icon		install icon theme (morewaita icon theme)
-
-  --apps <appimage|vm|games|vinput>
-          appimage   install appimage env (launcher/tool/deploy)
-          vm         install virt-manager, libvirt, qemu-kvm
-          games      install steam & prismlauncher
-          vinput     install voice input deps + just-talk
-
-EOF
+	echo "usage: $0 [--option value] ..."
+	echo
+	local m
+	for m in "${MOD_ORDER[@]}"; do
+		printf '  %-62s %s\n' "${MOD_SPEC[$m]}" "${MOD_DESC[$m]}"
+	done
+	echo
+	echo "  options can be combined: $0 --source config --desktop gnome --apps vm"
 }
 
 main() {
-	case "${1:-}" in
-		--source)
-			case "${2:-}" in
-				config)   config_dnf_source ;;
-				tsinghua) change_tsinghua_source ;;
-				ustc)     change_ustc_source ;;
-				origin)   change_origin_source ;;
-				*)
-					echo "error: unknown source '${2:-}'" >&2
-					usage
-					exit 1
-					;;
-			esac
-			;;
-		--user)
-			case "${2:-}" in
-				dir) config_usr_dir ;;
-				*)
-					echo "error: unknown user option '${2:-}'" >&2
-					usage
-					exit 1
-					;;
-			esac
-			;;
-		--toolchain)
-			install_toolchain
-			;;
-		--driver)
-			case "${2:-}" in
-				kextra) install_kernel_extra ;;
-				akmod)  sb_sign_akmod ;;
-				dkms)   sb_sign_dkms ;;
-				nvidia) install_nvidia ;;
-				*)
-					echo "error: unknown driver '${2:-}'" >&2
-					usage
-					exit 1
-					;;
-			esac
-			;;
-		--desktop)
-			case "${2:-}" in
-				gnome)     install_gnome_desktop ;;
-				gext)      install_gext ;;
-				bk_gext)   backup_gext ;;
-				gtk_theme) gtk_theme ;;
-				qt_theme)  qt_theme ;;
-				font)      install_fonts ;;
-				icon)	   install_icon ;;
-				*)
-					echo "error: unknown desktop '${2:-}'" >&2
-					usage
-					exit 1
-					;;
-			esac
-			;;
-		--apps)
-			case "${2:-}" in
-				desktop)   install_desktop_app ;;
-				appimage)  install_appimages_env ;;
-				vm)        install_vm ;;
-				games)     install_games_env ;;
-				uu)        install_uu_plugin ;;
-				vinput)    install_vinput ;;
-				*)
-					echo "error: unknown app '${2:-}'" >&2
-					usage
-					exit 1
-					;;
-			esac
-			;;
-		*)
+	[ $# -gt 0 ] || { usage >&2; exit 1; }
+
+	case "$1" in
+		-h|--help)
 			usage
-			exit 1
+			exit 0
 			;;
 	esac
+
+	parse_args "$@"
+	run_queue
 }
 
 main "$@"
