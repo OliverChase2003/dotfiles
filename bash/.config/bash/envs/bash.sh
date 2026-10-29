@@ -4,6 +4,7 @@ PATH_ENTRIES=(
   "$HOME/.local/bin"
   "$HOME/.local/share/cargo/bin"	## cargo
   "$HOME/.local/share/npm/bin"		## npm
+  "$HOME/.local/share/go/bin"		## go (go install)
 )
 IFS=: eval 'PATH="${PATH_ENTRIES[*]}:$PATH"'
 
