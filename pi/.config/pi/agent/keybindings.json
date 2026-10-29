@@ -47,7 +47,7 @@
 	"app.tree.filter.cycleForward": [],
 	"app.tree.filter.cycleBackward": [],
 
-	"app.tools.expand": ["ctrl+g"],
+	"app.tools.expand": [],
 
 	"tui.editor.deleteCharBackward": ["backspace"],
 	"tui.editor.deleteCharForward": ["delete"],
