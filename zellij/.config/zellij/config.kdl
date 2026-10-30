@@ -2,7 +2,7 @@ keybinds clear-defaults=true {
 	normal {
 		// mode switch
 		bind "ctrl space" {
-			Run "/home/oliver/.dotfiles/zellij/.config/zellij/scripts/im.sh" "switch" "us" {
+			Run "/home/oliver/.config/zellij/scripts/im.sh" "switch" "us" {
 				floating true
 				close_on_exit true
 				borderless true
@@ -14,7 +14,7 @@ keybinds clear-defaults=true {
 			SwitchToMode "tmux"
 		}
 		bind "alt /" {
-			Run "/home/oliver/.dotfiles/zellij/.config/zellij/scripts/im.sh" "switch" "us" {
+			Run "/home/oliver/.config/zellij/scripts/im.sh" "switch" "us" {
 				floating true
 				close_on_exit true
 				borderless true
@@ -26,7 +26,7 @@ keybinds clear-defaults=true {
 			SwitchToMode "locked"
 		}
 		bind "alt p" {
-			Run "/home/oliver/.dotfiles/zellij/.config/zellij/scripts/im.sh" "switch" "us" {
+			Run "/home/oliver/.config/zellij/scripts/im.sh" "switch" "us" {
 				floating true
 				close_on_exit true
 				borderless true
@@ -38,7 +38,7 @@ keybinds clear-defaults=true {
 			SwitchToMode "pane"
 		}
 		bind "alt t" {
-			Run "/home/oliver/.dotfiles/zellij/.config/zellij/scripts/im.sh" "switch" "us" {
+			Run "/home/oliver/.config/zellij/scripts/im.sh" "switch" "us" {
 				floating true
 				close_on_exit true
 				borderless true
@@ -50,7 +50,7 @@ keybinds clear-defaults=true {
 			SwitchToMode "tab"
 		}
 		bind "alt r" {
-			Run "/home/oliver/.dotfiles/zellij/.config/zellij/scripts/im.sh" "switch" "us" {
+			Run "/home/oliver/.config/zellij/scripts/im.sh" "switch" "us" {
 				floating true
 				close_on_exit true
 				borderless true
@@ -62,7 +62,7 @@ keybinds clear-defaults=true {
 			SwitchToMode "resize"
 		}
 		bind "alt v" {
-			Run "/home/oliver/.dotfiles/zellij/.config/zellij/scripts/im.sh" "switch" "us" {
+			Run "/home/oliver/.config/zellij/scripts/im.sh" "switch" "us" {
 				floating true
 				close_on_exit true
 				borderless true
@@ -74,7 +74,7 @@ keybinds clear-defaults=true {
 			SwitchToMode "scroll"
 		}
 		bind "alt m" {
-			Run "/home/oliver/.dotfiles/zellij/.config/zellij/scripts/im.sh" "switch" "us" {
+			Run "/home/oliver/.config/zellij/scripts/im.sh" "switch" "us" {
 				floating true
 				close_on_exit true
 				borderless true
@@ -86,7 +86,7 @@ keybinds clear-defaults=true {
 			SwitchToMode "move"
 		}
 		bind "alt s" {
-			Run "/home/oliver/.dotfiles/zellij/.config/zellij/scripts/im.sh" "switch" "us" {
+			Run "/home/oliver/.config/zellij/scripts/im.sh" "switch" "us" {
 				floating true
 				close_on_exit true
 				borderless true
