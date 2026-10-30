@@ -98,6 +98,7 @@ local function vimpack_setup_blink()
 		once = true,
 		callback = function()
 			require('blink.cmp').setup(blink_opt)
+			require('blink.cmp').build():pwait()
 		end
 	})
 end
