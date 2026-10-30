@@ -1,14 +1,102 @@
 keybinds clear-defaults=true {
 	normal {
 		// mode switch
-		bind "ctrl space" { SwitchToMode "tmux"; }
-		bind "alt /" { SwitchToMode "locked"; }
-		bind "alt p" { SwitchToMode "pane"; }
-		bind "alt t" { SwitchToMode "tab"; }
-		bind "alt r" { SwitchToMode "resize"; }
-		bind "alt v" { SwitchToMode "scroll"; }
-		bind "alt m" { SwitchToMode "move"; }
-		bind "alt s" { SwitchToMode "session"; }
+		bind "ctrl space" {
+			Run "/home/oliver/.dotfiles/zellij/.config/zellij/scripts/im.sh" "switch" "us" {
+				floating true
+				close_on_exit true
+				borderless true
+				x "0%"
+				y "0%"
+				width "0%"
+				height "0%"
+			}
+			SwitchToMode "tmux"
+		}
+		bind "alt /" {
+			Run "/home/oliver/.dotfiles/zellij/.config/zellij/scripts/im.sh" "switch" "us" {
+				floating true
+				close_on_exit true
+				borderless true
+				x "0%"
+				y "0%"
+				width "0%"
+				height "0%"
+			}
+			SwitchToMode "locked"
+		}
+		bind "alt p" {
+			Run "/home/oliver/.dotfiles/zellij/.config/zellij/scripts/im.sh" "switch" "us" {
+				floating true
+				close_on_exit true
+				borderless true
+				x "0%"
+				y "0%"
+				width "0%"
+				height "0%"
+			}
+			SwitchToMode "pane"
+		}
+		bind "alt t" {
+			Run "/home/oliver/.dotfiles/zellij/.config/zellij/scripts/im.sh" "switch" "us" {
+				floating true
+				close_on_exit true
+				borderless true
+				x "0%"
+				y "0%"
+				width "0%"
+				height "0%"
+			}
+			SwitchToMode "tab"
+		}
+		bind "alt r" {
+			Run "/home/oliver/.dotfiles/zellij/.config/zellij/scripts/im.sh" "switch" "us" {
+				floating true
+				close_on_exit true
+				borderless true
+				x "0%"
+				y "0%"
+				width "0%"
+				height "0%"
+			}
+			SwitchToMode "resize"
+		}
+		bind "alt v" {
+			Run "/home/oliver/.dotfiles/zellij/.config/zellij/scripts/im.sh" "switch" "us" {
+				floating true
+				close_on_exit true
+				borderless true
+				x "0%"
+				y "0%"
+				width "0%"
+				height "0%"
+			}
+			SwitchToMode "scroll"
+		}
+		bind "alt m" {
+			Run "/home/oliver/.dotfiles/zellij/.config/zellij/scripts/im.sh" "switch" "us" {
+				floating true
+				close_on_exit true
+				borderless true
+				x "0%"
+				y "0%"
+				width "0%"
+				height "0%"
+			}
+			SwitchToMode "move"
+		}
+		bind "alt s" {
+			Run "/home/oliver/.dotfiles/zellij/.config/zellij/scripts/im.sh" "switch" "us" {
+				floating true
+				close_on_exit true
+				borderless true
+				x "0%"
+				y "0%"
+				width "0%"
+				height "0%"
+			}
+			SwitchToMode "session"
+		}
 	}
 	locked {
 		// mode
