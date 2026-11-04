@@ -1,3 +1,6 @@
+-- navigate
+vim.keymap.set('n', 'J', '6j')
+vim.keymap.set('n', 'K', '6k')
 -- move between windows
 vim.keymap.set('n', '<C-h>', '<C-w>h')
 vim.keymap.set('n', '<C-j>', '<C-w>j')
