@@ -1,6 +1,6 @@
 local render_markdown_opt = {
 	file_types = { 'markdown', 'vimwiki', 'norg', 'typst' },
-	-- anti_conceal = { enabled = false },
+	-- anti_conceal = { enabled = true },
 	completions = {
 		lsp = { enabled = true },
 		blink = { enabled = true }
@@ -93,7 +93,7 @@ local imagenvim_opt = {
 	hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.avif" }, -- render image files as images when opened
 }
 
-local function vimpack_setup_render_markeown()
+local function vimpack_setup_render_markdown()
 	vim.pack.add({
 		{ src = "https://github.com/3rd/image.nvim" },
 		{ src = "https://github.com/MeanderingProgrammer/render-markdown.nvim" },
@@ -110,13 +110,13 @@ local function vimpack_setup_render_markeown()
 	})
 end
 
-local function lazy_setup_render_markeown()
+local function lazy_setup_render_markdown()
 end
 
 if vim.fn.has("nvim-0.12") == 1 then
-	vimpack_setup_render_markeown()
+	vimpack_setup_render_markdown()
 else
-	lazy_setup_render_markeown()
+	lazy_setup_render_markdown()
 end
 
 -- keymaps

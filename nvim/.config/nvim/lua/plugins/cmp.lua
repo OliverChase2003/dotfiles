@@ -89,7 +89,7 @@ end
 
 local function vimpack_setup_blink()
 	vim.pack.add({
-		-- { src = 'https://github.com/saghen/blink.cmp', version = 'v1' }
+		{ src = 'https://github.com/saghen/blink.lib' },
 		{ src = 'https://github.com/saghen/blink.cmp' }
 	})
 
@@ -98,6 +98,7 @@ local function vimpack_setup_blink()
 		once = true,
 		callback = function()
 			require('blink.cmp').setup(blink_opt)
+			require('blink.cmp').build():pwait()
 		end
 	})
 end
@@ -114,7 +115,7 @@ local function vimpack_setup_fade()
 		group = vim.api.nvim_create_augroup("SetupFade", { clear = true }),
 		once = true,
 		callback = function()
-			require('fade').setup(blink_opt)
+			require('fade').setup()
 		end
 	})
 end
