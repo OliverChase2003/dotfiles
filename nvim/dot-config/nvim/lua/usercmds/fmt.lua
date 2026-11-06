@@ -1,4 +1,4 @@
-local editorconfig_file = "/home/oliver/.dotfiles/nvim/.config/nvim/lua/usercmds/.editorconfig"
+local editorconfig_file = "/home/oliver/.config/nvim/lua/usercmds/.editorconfig"
 
 vim.api.nvim_create_user_command("Edcfg", function()
 	if vim.fn.filereadable(editorconfig_file) ~= 1 then
@@ -15,7 +15,7 @@ vim.api.nvim_create_user_command("Edcfg", function()
 end, { desc = "Copy .editorconfig template to cwd" })
 
 
-local clang_format_file = "/home/oliver/.dotfiles/nvim/.config/nvim/lua/usercmds/.clang-format"
+local clang_format_file = "/home/oliver/.config/nvim/lua/usercmds/.clang-format"
 
 vim.api.nvim_create_user_command("Clangfmt", function()
 	if vim.fn.filereadable(clang_format_file) ~= 1 then
