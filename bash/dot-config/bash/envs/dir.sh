@@ -17,5 +17,5 @@ export GOMODCACHE="$XDG_CACHE_HOME/go/pkg/mod"
 export GOCACHE="$XDG_CACHE_HOME/go-build"
 
 ## pi
-export PI_CODING_AGENT_DIR="$XDG_CONFIG_HOME/pi/agent"
-export PI_CODING_AGENT_SESSION_DIR="$XDG_CONFIG_HOME/pi/sessions"
+export PI_CODING_AGENT_DIR="$XDG_CONFIG_HOME/pi"
+export PI_CODING_AGENT_SESSION_DIR="$XDG_DATA_HOME/pi/sessions"
