@@ -1,3 +1,4 @@
 --dotfiles
 --no-folding
 --target=~
+--restow
