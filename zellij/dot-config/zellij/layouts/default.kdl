@@ -4,7 +4,7 @@ layout {
 		plugin location="https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm" {
 			format_left			"{tabs}"
 			format_center		""
-			format_right		"#[fg=#cdd6f4,bold] {session} {mode}"
+			format_right		"#[fg=#cdd6f4,bold] {mode}"
 			format_space		"[#363a4f] "
 
 			mode_normal			"#[bg=#b4befe,fg=#1e1e2e,bold] NORMAL  "
