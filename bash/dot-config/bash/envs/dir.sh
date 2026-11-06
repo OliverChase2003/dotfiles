@@ -9,7 +9,11 @@ export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 
 ## node
-export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+if [ -f $XDG_CONFIG_HOME/npm/npmrc ]; then
+	export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+fi
+export NPM_CONFIG_PREFIX="${XDG_DATA_HOME}/npm"
+export NPM_CONFIG_CACHE="${XDG_CACHE_HOME}/npm"
 
 ## go
 export GOPATH="$XDG_DATA_HOME/go"
