@@ -67,8 +67,8 @@ local blink_opt = {
 		default = { 'lsp', 'path', 'buffer' },
 	},
 	signature = { enabled = true },
-	-- fuzzy = { implementation = "prefer_rust_with_warning" },
-	fuzzy = { implementation = "lua" },
+	fuzzy = { implementation = "prefer_rust_with_warning" },
+	-- fuzzy = { implementation = "lua" },
 }
 
 local function vimpack_setup_autopairs()
@@ -99,7 +99,7 @@ local function vimpack_setup_blink()
 		once = true,
 		callback = function()
 			require('blink.cmp').setup(blink_opt)
-			-- require('blink.cmp').download():pwait()
+			require('blink.cmp').build():pwait()
 		end
 	})
 end
