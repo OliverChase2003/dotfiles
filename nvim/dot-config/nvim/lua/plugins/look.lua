@@ -131,34 +131,46 @@ local function config_alpha_dashboard(dashboard)
 	}
 end
 
-local function vimpack_setup_look()
+local function vimpack_setup_catppuccin()
 	vim.pack.add({
 		{ src = "https://github.com/catppuccin/nvim" },
-		{ src = "https://github.com/nvim-tree/nvim-web-devicons" },
-		{ src = "https://github.com/nvim-lualine/lualine.nvim"},
-		{ src = "https://github.com/akinsho/bufferline.nvim" },
-		{ src = "https://github.com/goolord/alpha-nvim" }
 	})
-	-- theme
+
 	require('catppuccin').setup(catppuccin_opt)
 	vim.cmd("colorscheme catppuccin")
-	-- icon
-	require('nvim-web-devicons').setup()
-	-- lualine
-	require("lualine").setup(lualine_opt)
-	-- alpha
-	-- local Dashboard = require("alpha.themes.dashboard")
-	-- config_alpha_dashboard(Dashboard)
-
-	-- require('alpha').setup(Dashboard.config) -- use dashboard theme to startup
 end
 
-local function lazy_setup_look()
+local function vimpack_setup_icon()
+	vim.pack.add({
+		{ src = "https://github.com/nvim-tree/nvim-web-devicons" },
+	})
 
+	require('nvim-web-devicons').setup()
+end
+
+local function vimpack_setup_lualine()
+	vim.pack.add({
+		{ src = "https://github.com/nvim-lualine/lualine.nvim"},
+	})
+
+	require("lualine").setup(lualine_opt)
+end
+
+local function vimpack_setup_alpha()
+	vim.pack.add({
+		{ src = "https://github.com/goolord/alpha-nvim" }
+	})
+
+	local Dashboard = require("alpha.themes.dashboard")
+	config_alpha_dashboard(Dashboard)
+
+	require('alpha').setup(Dashboard.config) -- use dashboard theme to startup
 end
 
 if vim.fn.has("nvim-0.12") == 1 then
-	vimpack_setup_look()
+	vimpack_setup_catppuccin()
+	vimpack_setup_icon()
+	vimpack_setup_lualine()
+	-- vimpack_setup_alpha()
 else
-	lazy_setup_look()
 end

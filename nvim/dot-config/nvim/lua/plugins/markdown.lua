@@ -108,6 +108,8 @@ local function vimpack_setup_render_markdown()
 			require('render-markdown').setup(render_markdown_opt)
 		end,
 	})
+
+	vim.keymap.set('n', '<leader>md', '<CMD>RenderMarkdown toggle<CR>', { desc = 'Toggle render markdown' })
 end
 
 local function lazy_setup_render_markdown()
@@ -120,4 +122,3 @@ else
 end
 
 -- keymaps
-vim.keymap.set('n', '<leader>md', '<CMD>RenderMarkdown toggle<CR>', { desc = 'Toggle render markdown' })

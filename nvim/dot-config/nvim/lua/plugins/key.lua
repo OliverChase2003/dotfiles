@@ -36,14 +36,22 @@ local function vimpack_setup_jieba()
 
 end
 
+local function lazy_setup_jieba()
+
+end
+
 local function vimpack_setup_whichkey()
 	vim.pack.add({
 		{ src = "https://github.com/folke/which-key.nvim" }
 	})
+
 	require("which-key").setup(whichkey_opt)
+
+	vim.keymap.set('n', '<leader>kk', '<CMD>WhichKey<CR>', { desc = 'View keymap' })
 end
 
 local function lazy_setup_whichkey()
+
 end
 
 if vim.fn.has("nvim-0.12") == 1 then
@@ -51,6 +59,6 @@ if vim.fn.has("nvim-0.12") == 1 then
 	vimpack_setup_jieba()
 else
 	lazy_setup_whichkey()
+	lazy_setup_jieba()
 end
 
-vim.keymap.set('n', '<leader>kk', '<CMD>WhichKey<CR>', { desc = 'View keymap' })

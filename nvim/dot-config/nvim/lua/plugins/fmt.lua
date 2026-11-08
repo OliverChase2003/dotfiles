@@ -1,7 +1,5 @@
 local conform_opt = {
-	formatters_by_ft = {
-		c = { "clang-format" },
-		cpp = { "clang-format" },
+	formatters_by_ft = { c = { "clang-format" }, cpp = { "clang-format" },
 		lua = { "stylua" },
 		python = { "isort", "black" },
 		rust = { "rustfmt", lsp_format = "fallback" },
@@ -18,6 +16,11 @@ local function vimpack_setup_conform()
 			require("conform").setup(conform_opt)
 		end
 	})
+
+	vim.keymap.set("n", "<leader>fm", function()
+		require("conform").format()
+	end, { desc = "Format code" }
+)
 end
 
 local function lazy_setup_conform()
@@ -28,10 +31,3 @@ if vim.fn.has("nvim-0.12") == 1 then
 else
 	lazy_setup_conform()
 end
-
-vim.keymap.set("n", "<leader>fm",
-	function()
-		require("conform").format()
-	end,
-	{ desc = "Format code" }
-)

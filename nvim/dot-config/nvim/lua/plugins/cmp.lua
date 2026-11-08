@@ -67,7 +67,8 @@ local blink_opt = {
 		default = { 'lsp', 'path', 'buffer' },
 	},
 	signature = { enabled = true },
-	fuzzy = { implementation = "prefer_rust_with_warning" },
+	-- fuzzy = { implementation = "prefer_rust_with_warning" },
+	fuzzy = { implementation = "lua" },
 }
 
 local function vimpack_setup_autopairs()
@@ -98,13 +99,14 @@ local function vimpack_setup_blink()
 		once = true,
 		callback = function()
 			require('blink.cmp').setup(blink_opt)
-			require('blink.cmp').build():pwait()
+			-- require('blink.cmp').download():pwait()
 		end
 	})
 end
 
 local function lazy_setup_blink()
 end
+
 
 local function vimpack_setup_fade()
 	vim.pack.add({
@@ -120,6 +122,10 @@ local function vimpack_setup_fade()
 	})
 end
 
+local function lazy_setup_fade()
+
+end
+
 if vim.fn.has("nvim-0.12") == 1 then
 	vimpack_setup_autopairs()
 	vimpack_setup_blink()
@@ -127,4 +133,5 @@ if vim.fn.has("nvim-0.12") == 1 then
 else
 	lazy_setup_autopairs()
 	lazy_setup_blink()
+	lazy_setup_fade()
 end
