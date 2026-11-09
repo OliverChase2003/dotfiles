@@ -22,9 +22,15 @@ local function vimpack_setup_csv_view()
 			require('csvview').setup(csvview_opt)
 		end,
 	})
+
+	vim.keymap.set('n', '<leader>csv',
+		'<CMD>CsvViewToggle delimiter=, display_mode=border header_lnum=1<CR>',
+		{ desc = 'Csv view' }
+	)
 end
 
 local function lazy_setup_csv_view()
+
 end
 
 if vim.fn.has("nvim-0.12") == 1 then
@@ -32,8 +38,3 @@ if vim.fn.has("nvim-0.12") == 1 then
 else
 	lazy_setup_csv_view()
 end
-
-vim.keymap.set('n', '<leader>csv',
-	'<CMD>CsvViewToggle delimiter=, display_mode=border header_lnum=1<CR>',
-	{ desc = 'Csv view' }
-)

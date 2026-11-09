@@ -1,7 +1,6 @@
 local oil_opt = {
 	default_file_explorer = true,
-	columns = {
-		'icon',
+	columns = { 'icon',
 		{ 'size', highlight = 'Special' },
 		{ 'permissions', highlight = 'Comment' },
 	},
@@ -157,13 +156,22 @@ local function vimpack_setup_file()
 		{ src = "https://github.com/nvim-lua/plenary.nvim" },
 		{ src = "https://github.com/nvim-telescope/telescope.nvim" },
 	})
+
 	require('oil').setup(oil_opt)
 	require("oil-git").setup(oilgit_opt)
-
 	require('telescope').setup(telescope_opt)
-	local Builtin = require('telescope.builtin')
-	config_telescope_keymap(Builtin)
 
+	local Builtin = require('telescope.builtin')
+
+	vim.keymap.set("n", "<leader>e", function()
+		require("oil").open_float()
+	end, { desc = "Oil float" })
+
+	vim.keymap.set('n', '<leader>fe', function()
+		require("oil").open()
+	end, { desc = 'Oil' })
+
+	config_telescope_keymap(Builtin)
 end
 
 local function lazy_setup_file()
@@ -174,15 +182,3 @@ if vim.fn.has("nvim-0.12") == 1 then
 else
 	lazy_setup_file()
 end
-
--- keymaps for oil
-vim.keymap.set("n", "<leader>e", function()
-	require("oil").open_float()
-end,
-{ desc = "Oil float" })
-
-vim.keymap.set('n', '<leader>fe', function()
-	require("oil").open()
-end
-, { desc = 'Oil' })
-

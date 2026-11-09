@@ -68,6 +68,7 @@ local blink_opt = {
 	},
 	signature = { enabled = true },
 	fuzzy = { implementation = "prefer_rust_with_warning" },
+	-- fuzzy = { implementation = "lua" },
 }
 
 local function vimpack_setup_autopairs()
@@ -106,6 +107,7 @@ end
 local function lazy_setup_blink()
 end
 
+
 local function vimpack_setup_fade()
 	vim.pack.add({
 		{ src = 'https://github.com/Fau818/fade.nvim' }
@@ -120,6 +122,10 @@ local function vimpack_setup_fade()
 	})
 end
 
+local function lazy_setup_fade()
+
+end
+
 if vim.fn.has("nvim-0.12") == 1 then
 	vimpack_setup_autopairs()
 	vimpack_setup_blink()
@@ -127,4 +133,5 @@ if vim.fn.has("nvim-0.12") == 1 then
 else
 	lazy_setup_autopairs()
 	lazy_setup_blink()
+	lazy_setup_fade()
 end

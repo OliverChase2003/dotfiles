@@ -1,11 +1,11 @@
 -- general options
 require('options')
 
--- include plugins
-require('plugins')
-
 -- include keymaps
 require('keymaps')
+
+-- include plugins
+require('plugins')
 
 -- autocmds
 require('autocmds')

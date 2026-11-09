@@ -2,8 +2,25 @@ local treesitter_opt = {
 	install_dir = vim.fn.stdpath('data') .. '/site'
 }
 
+local ts_context_opt = {
+	enable = true,
+	multiwindow = false,
+	max_lines = 0,
+	min_window_height = 0,
+	line_numbers = true,
+	multiline_threshold = 20,
+	trim_scope = 'outer',
+	mode = 'cursor',
+	separator = nil,
+	zindex = 20,
+	on_attach = nil,
+}
+
 local function vimpack_setup_treesitter()
-	vim.pack.add({ { src = "https://github.com/nvim-treesitter/nvim-treesitter" } })
+	vim.pack.add({
+		{ src = "https://github.com/nvim-treesitter/nvim-treesitter" },
+		{ src = "https://github.com/nvim-treesitter/nvim-treesitter-context"}
+	})
 
 	local group = vim.api.nvim_create_augroup("SetupTreesitter", { clear = true })
 
@@ -12,6 +29,7 @@ local function vimpack_setup_treesitter()
 		once = true,
 		callback = function()
 			require('nvim-treesitter').setup(treesitter_opt)
+			require('treesitter-context').setup(ts_context_opt)
 		end,
 	})
 
@@ -26,6 +44,10 @@ local function vimpack_setup_treesitter()
 			end
 		end,
 	})
+
+	vim.keymap.set("n", "gc", function()
+		require("treesitter-context").go_to_context(vim.v.count1)
+	end, { silent = true })
 end
 
 local function lazy_setup_treesitter()

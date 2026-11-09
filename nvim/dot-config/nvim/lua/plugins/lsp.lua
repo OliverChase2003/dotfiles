@@ -4,6 +4,31 @@ local mason_lsp_opt = {
 	automatic_enable = true,
 }
 
+-- aerial
+local aerial_opt = {
+	backends = { "treesitter", "lsp", "markdown", "asciidoc", "man" },
+	lazy_load = true,
+	layout = {
+		default_direction = "prefer_left",
+		placement = "edge",
+		resize_to_content = true,
+		max_width = 0.2,
+		min_width = 0.1,
+		width = nil,
+		win_opts = {},
+	},
+	on_attach = function(bufnr)
+		-- quit
+		vim.keymap.set("n", "<Esc>", "<cmd>AerialClose<CR>", { buffer = bufnr })
+		vim.keymap.set("n", "<C-c>", "<cmd>AerialClose<CR>", { buffer = bufnr })
+		vim.keymap.set("n", "q", "<cmd>AerialClose<CR>", { buffer = bufnr })
+		-- navigate
+		vim.keymap.set("n", "<C-p>", "<cmd>AerialPrev<CR>", { buffer = bufnr })
+		vim.keymap.set("n", "<C-n>", "<cmd>AerialNext<CR>", { buffer = bufnr })
+	end,
+	highlight_on_hover = true,
+}
+
 local function vimpack_setup_masonlsp()
 	vim.pack.add({
 		{ src = "https://github.com/neovim/nvim-lspconfig" },
@@ -16,10 +41,31 @@ end
 local function lazy_setup_masonlsp()
 end
 
+local function vimpack_setup_aerial()
+	vim.pack.add({
+		{ src = "https://github.com/stevearc/aerial.nvim" }
+	})
+
+	vim.api.nvim_create_autocmd('BufEnter', {
+		group = vim.api.nvim_create_augroup('SetupAerial', { clear = true }),
+		callback = function()
+			require("aerial").setup(aerial_opt)
+		end,
+	})
+
+	vim.keymap.set("n", "<leader>ss", "<cmd>AerialToggle!<CR>")
+end
+
+local function lazy_setup_aerial()
+
+end
+
 if vim.fn.has("nvim-0.12") == 1 then
 	vimpack_setup_masonlsp()
+	vimpack_setup_aerial()
 else
 	lazy_setup_masonlsp()
+	lazy_setup_aerial()
 end
 
 -- specify lsp
@@ -31,33 +77,3 @@ vim.diagnostic.config({
 	underline = true,
 	update_in_insert = false
 })
-
-vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'Go to definition' })
-vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { desc = 'Go to declaration' })
-vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { desc = 'Go to implementation' })
-vim.keymap.set('n', 'gr', vim.lsp.buf.references, { desc = 'Go to references' })
-
-vim.keymap.set('n', 'gO', function()
-	vim.lsp.buf.document_symbol({
-		loclist = true,
-	})
-end, { desc = 'Go to document symbol' })
-
-vim.keymap.set('n', 'K',
-	function()
-		vim.lsp.buf.hover({
-			border = 'single',
-		})
-	end,
-	{ desc = 'Hover docs' })
-
-vim.keymap.set("n", "<leader>ih",
-	function()
-		vim.lsp.inlay_hint.enable(
-			not vim.lsp.inlay_hint.is_enabled()
-		)
-	end,
-	{ desc = 'Toggle inlay hint' }
-)
-
-vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = 'Rename variable'})

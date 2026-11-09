@@ -19,32 +19,39 @@ local whichkey_opt = {
 }
 
 local function vimpack_setup_jieba()
-	vim.g.jieba_vim_keymap = 1
-	vim.g.jieba_vim_lazy = 1
-
 	vim.pack.add({
 		{ src = "https://github.com/kkew3/jieba.vim" }
 	})
 
-	local so_path = vim.fn.stdpath("data")
+	local jieba_so_path = vim.fn.stdpath("data")
 		.. "/site/pack/core/opt/jieba.vim"
 		.. "/lua/jieba_vim/jieba_vim_rs.so"
 
-	if vim.uv.fs_stat(so_path) then return end
+	if vim.uv.fs_stat(jieba_so_path) then return end
 
 	if vim.fn.executable("cargo") ~= 1 then return end
 
-	vim.cmd("call jieba_vim#install()")
+	vim.g.jieba_vim_keymap = 1
+	vim.g.jieba_vim_lazy = 1
+
+end
+
+local function lazy_setup_jieba()
+
 end
 
 local function vimpack_setup_whichkey()
 	vim.pack.add({
 		{ src = "https://github.com/folke/which-key.nvim" }
 	})
+
 	require("which-key").setup(whichkey_opt)
+
+	vim.keymap.set('n', '<leader>kk', '<CMD>WhichKey<CR>', { desc = 'View keymap' })
 end
 
 local function lazy_setup_whichkey()
+
 end
 
 if vim.fn.has("nvim-0.12") == 1 then
@@ -52,6 +59,6 @@ if vim.fn.has("nvim-0.12") == 1 then
 	vimpack_setup_jieba()
 else
 	lazy_setup_whichkey()
+	lazy_setup_jieba()
 end
 
-vim.keymap.set('n', '<leader>kk', '<CMD>WhichKey<CR>', { desc = 'View keymap' })

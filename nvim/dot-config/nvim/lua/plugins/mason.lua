@@ -15,6 +15,8 @@ local function vimpack_setup_mason()
 	})
 
 	require("mason").setup(mason_opt)
+
+	vim.keymap.set("n", "<leader>mm", "<CMD>Mason<CR>", { desc = "Open mason" })
 end
 
 local function lazy_setup_mason()
@@ -26,6 +28,3 @@ if vim.fn.has("nvim-0.12") == 1 then
 else
 	lazy_setup_mason()
 end
-
--- keymaps
-vim.keymap.set("n", "<leader>mm", "<CMD>Mason<CR>", { desc = "Open mason" })

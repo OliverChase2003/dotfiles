@@ -13,7 +13,9 @@ local bufferline_opt = {
 }
 
 local function vimpack_setup_bufferline()
-	vim.pack.add({ { src = "https://github.com/akinsho/bufferline.nvim" } })
+	vim.pack.add({
+		{ src = "https://github.com/akinsho/bufferline.nvim" }
+	})
 
 	vim.api.nvim_create_autocmd("BufAdd", {
 		callback = function()
@@ -21,6 +23,11 @@ local function vimpack_setup_bufferline()
 		end,
 		once = true,
 	})
+
+	vim.keymap.set('n', 'H', '<CMD>BufferLineCyclePrev<CR>', { desc = 'Prev buffer' })
+	vim.keymap.set('n', 'L', '<CMD>BufferLineCycleNext<CR>', { desc = 'Next buffer' })
+	vim.keymap.set('n', '<', '<CMD>BufferLineMovePrev<CR>', { desc = 'Move left' })
+	vim.keymap.set('n', '>', '<CMD>BufferLineMoveNext<CR>', { desc = 'Move right' })
 end
 
 local function lazy_setup_bufferline()
@@ -32,34 +39,3 @@ if vim.fn.has("nvim-0.12") == 1 then
 else
 	lazy_setup_bufferline()
 end
-
--- keymaps
-vim.keymap.set('n', 'H', '<CMD>BufferLineCyclePrev<CR>', { desc = 'Prev buffer' })
-vim.keymap.set('n', 'L', '<CMD>BufferLineCycleNext<CR>', { desc = 'Next buffer' })
-vim.keymap.set('n', '<', '<CMD>BufferLineMovePrev<CR>', { desc = 'Move left' })
-vim.keymap.set('n', '>', '<CMD>BufferLineMoveNext<CR>', { desc = 'Move right' })
-
-vim.keymap.set('n', '<leader>bd', function()
-	-- ban this keymap while nvim-dap-ui opened
-	if DapuiStatus == true then return end
-	vim.cmd('bdelete')
-end, { desc = 'Delete buffer' })
-
-vim.keymap.set('n', '<leader>bx', function()
-	if DapuiStatus == true then return end
-	vim.cmd('bdelete!')
-end, { desc = 'Force delete buffer' })
-
-vim.keymap.set('n', '<C-d>', function()
-	if DapuiStatus == true then return end
-	local is_empty = vim.api.nvim_buf_line_count(0) == 1
-		and vim.api.nvim_buf_get_lines(0, 0, 1, false)[1] == ""
-	local is_no_name = vim.api.nvim_buf_get_name(0) == ''
-	if is_empty and is_no_name then
-		vim.cmd('qa')
-		return
-	end
-	vim.cmd('bdelete!')
-end, { desc = 'Force delete buffer (quit if sole [No Name])'})
-
-vim.keymap.set('n', '<leader>bb', '<CMD>e!<CR>', { desc = 'Reload buffer'})
