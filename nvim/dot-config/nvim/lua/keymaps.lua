@@ -29,13 +29,21 @@ end, { desc = 'Force delete buffer' })
 
 vim.keymap.set('n', '<C-d>', function()
 	if DapuiStatus == true then return end
+
+	local no_split = not (#vim.api.nvim_list_wins() > 1)
+
+	local no_buffer = #vim.fn.getbufinfo({ buflisted = 1 }) == 1
+
 	local is_empty = vim.api.nvim_buf_line_count(0) == 1
 		and vim.api.nvim_buf_get_lines(0, 0, 1, false)[1] == ""
+
 	local is_no_name = vim.api.nvim_buf_get_name(0) == ''
-	if is_empty and is_no_name then
+
+	if is_empty and is_no_name and no_buffer and no_split then
 		vim.cmd('qa')
 		return
 	end
+
 	vim.cmd('bdelete!')
 end, { desc = 'Force delete buffer (quit if sole [No Name])'})
 

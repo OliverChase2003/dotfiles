@@ -144,9 +144,9 @@ local function config_telescope_keymap(builtin)
 		builtin.lsp_document_symbols()
 	end, { desc = 'Find lsp symbols(this buffer)' })
 
-	vim.keymap.set("n", "<leader>fs", function()
+	vim.keymap.set("n", "<leader>fS", function()
 		builtin.lsp_workspace_symbols()
-	end, { desc = 'Find lsp symbols(this buffer)' })
+	end, { desc = 'Find lsp symbols(this workspace)' })
 end
 
 local function vimpack_setup_file()
