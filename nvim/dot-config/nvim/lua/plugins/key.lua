@@ -33,7 +33,6 @@ local function vimpack_setup_jieba()
 
 	vim.g.jieba_vim_keymap = 1
 	vim.g.jieba_vim_lazy = 1
-
 end
 
 local function lazy_setup_jieba()

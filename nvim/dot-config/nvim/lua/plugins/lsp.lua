@@ -11,7 +11,7 @@ local aerial_opt = {
 	layout = {
 		default_direction = "prefer_left",
 		placement = "edge",
-		resize_to_content = true,
+		resize_to_content = false,
 		max_width = 0.2,
 		min_width = 0.1,
 		width = nil,
@@ -27,6 +27,10 @@ local aerial_opt = {
 		vim.keymap.set("n", "<C-n>", "<cmd>AerialNext<CR>", { buffer = bufnr })
 	end,
 	highlight_on_hover = true,
+	highlight_on_jump = 300,
+	close_automatic_events = {
+		switch_buffer = true,
+	},
 }
 
 local function vimpack_setup_masonlsp()
@@ -53,7 +57,9 @@ local function vimpack_setup_aerial()
 		end,
 	})
 
-	vim.keymap.set("n", "<leader>ss", "<cmd>AerialToggle!<CR>")
+	vim.keymap.set("n", "<leader>ss", function()
+		vim.cmd("AerialToggle!")
+	end, { desc = 'Open aerial' })
 end
 
 local function lazy_setup_aerial()

@@ -18,24 +18,38 @@ vim.keymap.set('n', '<C-Right>', '<CMD>vertical resize +1<CR>', { desc = 'Resize
 vim.keymap.set('n', '<leader>bb', '<CMD>e!<CR>', { desc = 'Reload buffer'})
 vim.keymap.set('n', '<leader>bd', function()
 	-- ban this keymap while nvim-dap-ui opened
-	if DapuiStatus == true then return end
+	if CheckDapStatus() then
+		return
+	end
 	vim.cmd('bdelete')
 end, { desc = 'Delete buffer' })
 
 vim.keymap.set('n', '<leader>bx', function()
-	if DapuiStatus == true then return end
+	if CheckDapStatus() then
+		return
+	end
 	vim.cmd('bdelete!')
 end, { desc = 'Force delete buffer' })
 
 vim.keymap.set('n', '<C-d>', function()
-	if DapuiStatus == true then return end
+	if CheckDapStatus() then
+		return
+	end
+
+	local no_split = not (vim.tbl_count(vim.api.nvim_tabpage_list_wins(0)) > 1)
+
+	local no_buffer = #vim.fn.getbufinfo({ buflisted = 1 }) == 1
+
 	local is_empty = vim.api.nvim_buf_line_count(0) == 1
 		and vim.api.nvim_buf_get_lines(0, 0, 1, false)[1] == ""
+
 	local is_no_name = vim.api.nvim_buf_get_name(0) == ''
-	if is_empty and is_no_name then
+
+	if is_empty and is_no_name and no_buffer and no_split then
 		vim.cmd('qa')
 		return
 	end
+
 	vim.cmd('bdelete!')
 end, { desc = 'Force delete buffer (quit if sole [No Name])'})
 
