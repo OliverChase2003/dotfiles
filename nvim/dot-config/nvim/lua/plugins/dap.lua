@@ -1,6 +1,11 @@
 local Dap = nil
 local Dapui = nil
-DapuiStatus = false
+
+
+local dapui_status = false
+function CheckDapStatus()
+	return dapui_status == true
+end
 
 vim.fn.sign_define("DapBreakpoint", {
 	text = "●",
@@ -105,24 +110,24 @@ local dapui_opt = {
 
 local function config_dap_listener(dap, dapui)
 	dap.listeners.before.attach.dapui_config = function()
-		Dapui_Status = true
+		dapui_status = true
 		dapui.open()
 	end
 	dap.listeners.before.launch.dapui_config = function()
-		Dapui_Status = true
+		dapui_status = true
 		dapui.open()
 	end
 	dap.listeners.before.event_terminated.dapui_config = function()
 		dapui.close()
-		Dapui_Status = false
+		dapui_status = false
 	end
 	dap.listeners.before.event_exited.dapui_config = function()
 		dapui.close()
-		Dapui_Status = false
+		dapui_status = false
 	end
 	dap.listeners.before.disconnect.dapui_config = function()
 		dapui.close()
-		Dapui_Status = false
+		dapui_status = false
 	end
 end
 

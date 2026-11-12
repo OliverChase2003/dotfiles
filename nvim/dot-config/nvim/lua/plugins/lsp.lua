@@ -10,8 +10,8 @@ local aerial_opt = {
 	lazy_load = true,
 	layout = {
 		default_direction = "prefer_left",
-		placement = "window",
-		resize_to_content = true,
+		placement = "edge",
+		resize_to_content = false,
 		max_width = 0.2,
 		min_width = 0.1,
 		width = nil,
@@ -30,7 +30,6 @@ local aerial_opt = {
 	highlight_on_jump = 300,
 	close_automatic_events = {
 		switch_buffer = true,
-		unsupported = true,
 	},
 }
 
@@ -59,9 +58,9 @@ local function vimpack_setup_aerial()
 	})
 
 	vim.keymap.set("n", "<leader>ss", function()
-		local no_split = not (#vim.api.nvim_list_wins() > 1)
-		if no_split then
-			vim.cmd("AerialToggle")
+		local is_split = vim.tbl_count(vim.api.nvim_tabpage_list_wins(0)) > 1
+		if is_split then
+			vim.cmd("AerialToggle!")
 		end
 	end, { desc = 'Open aerial'})
 end

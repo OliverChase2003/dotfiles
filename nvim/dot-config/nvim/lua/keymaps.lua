@@ -18,19 +18,25 @@ vim.keymap.set('n', '<C-Right>', '<CMD>vertical resize +1<CR>', { desc = 'Resize
 vim.keymap.set('n', '<leader>bb', '<CMD>e!<CR>', { desc = 'Reload buffer'})
 vim.keymap.set('n', '<leader>bd', function()
 	-- ban this keymap while nvim-dap-ui opened
-	if DapuiStatus == true then return end
+	if CheckDapStatus() then
+		return
+	end
 	vim.cmd('bdelete')
 end, { desc = 'Delete buffer' })
 
 vim.keymap.set('n', '<leader>bx', function()
-	if DapuiStatus == true then return end
+	if CheckDapStatus() then
+		return
+	end
 	vim.cmd('bdelete!')
 end, { desc = 'Force delete buffer' })
 
 vim.keymap.set('n', '<C-d>', function()
-	if DapuiStatus == true then return end
+	if CheckDapStatus() then
+		return
+	end
 
-	local no_split = not (#vim.api.nvim_list_wins() > 1)
+	local no_split = not (vim.tbl_count(vim.api.nvim_tabpage_list_wins(0)) > 1)
 
 	local no_buffer = #vim.fn.getbufinfo({ buflisted = 1 }) == 1
 
