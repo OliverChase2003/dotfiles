@@ -58,11 +58,8 @@ local function vimpack_setup_aerial()
 	})
 
 	vim.keymap.set("n", "<leader>ss", function()
-		local is_split = vim.tbl_count(vim.api.nvim_tabpage_list_wins(0)) > 1
-		if is_split then
-			vim.cmd("AerialToggle!")
-		end
-	end, { desc = 'Open aerial'})
+		vim.cmd("AerialToggle!")
+	end, { desc = 'Open aerial' })
 end
 
 local function lazy_setup_aerial()
