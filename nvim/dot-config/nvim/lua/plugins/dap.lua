@@ -3,6 +3,7 @@ local Dapui = nil
 
 
 local dapui_status = false
+
 function CheckDapStatus()
 	return dapui_status == true
 end

@@ -58,8 +58,11 @@ local function vimpack_setup_aerial()
 	})
 
 	vim.keymap.set("n", "<leader>ss", function()
+		if CheckDapStatus() then
+			return
+		end
 		vim.cmd("AerialToggle!")
-	end, { desc = 'Open aerial' })
+	end, { desc = 'Toggle aerial' })
 end
 
 local function lazy_setup_aerial()
