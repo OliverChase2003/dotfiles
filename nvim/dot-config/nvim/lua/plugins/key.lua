@@ -27,12 +27,26 @@ local function vimpack_setup_jieba()
 		.. "/site/pack/core/opt/jieba.vim"
 		.. "/lua/jieba_vim/jieba_vim_rs.so"
 
-	if vim.uv.fs_stat(jieba_so_path) then return end
 
-	if vim.fn.executable("cargo") ~= 1 then return end
+	if vim.uv.fs_stat(jieba_so_path) then
+		vim.g.jieba_vim_keymap = 1
+		vim.g.jieba_vim_lazy = 1
+	else
+		if vim.fn.executable("cargo") ~= 1 then
+			return
+		end
 
-	vim.g.jieba_vim_keymap = 1
-	vim.g.jieba_vim_lazy = 1
+		vim.api.nvim_create_autocmd("VimEnter", {
+			group = vim.api.nvim_create_augroup('BuildJieba', { clear = true }),
+			callback = function()
+				local ok, result = vim.cmd("call jieba_vim#install()")
+				if ok then
+					vim.g.jieba_vim_keymap = 1
+					vim.g.jieba_vim_lazy = 1
+				end
+			end,
+		})
+	end
 end
 
 local function lazy_setup_jieba()
