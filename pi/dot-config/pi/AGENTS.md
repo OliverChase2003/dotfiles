@@ -70,13 +70,12 @@
 ### 典型链路
 
 > “/” 表示可并行，例如: `researcher`/`debugger`/`explorer` 表示三者并行。
-
 1. 编写模块/完整代码:
-    - `researcher`/`explorer`
-    - `planner`
-    - `implementer`
-    - `tester` 
-    - `reviewer`
+    - `researcher`/`explorer`: 
+    - `planner`: 
+    - `implementer`: 
+    - `tester` : 
+    - `reviewer`: 
 2. 调试/修复 bug: 
     - `debugger`
     - `researcher`/`explorer`
