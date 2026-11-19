@@ -55,8 +55,8 @@
 
 ### 路由表
 
-| 条件 | subagent | 输入 |
-|---|---|---|
+| 条件 | subagent |
+|---|---|
 | 读多份文件、捋接口关系、确认改动的影响范围 | `explorer` |
 | 代码架构、公共接口、文档提纲、多文件改动 | `planner` |
 | 外部信息，如: 版本、库用法、报错含义 | `researcher` |
@@ -71,9 +71,20 @@
 
 > “/” 表示可并行，例如: `researcher`/`debugger`/`explorer` 表示三者并行。
 
-1. 编写模块/完整代码: `researcher`/`explorer` -> `planner` -> `implementer` -> `tester` -> `reviewer`
-2. 调试/修复 bug: `debugger` -> `researcher`/`explorer` -> `implementer` -> `tester`
-3. 编写文档: `planner` -> `writer`
+1. 编写模块/完整代码:
+    - `researcher`/`explorer`
+    - `planner`
+    - `implementer`
+    - `tester` 
+    - `reviewer`
+2. 调试/修复 bug: 
+    - `debugger`
+    - `researcher`/`explorer`
+    - `implementer`
+    - `tester`
+3. 编写文档: 
+    - `planner`
+    - `writer`
 
 ### PROMPT 规范
 
