@@ -1,6 +1,6 @@
 ---
 description: 写或更新文档（README、使用说明、注释）；内容必须与代码实际行为一致
-display_name: Doc Writer
+display_name: Writer
 tools: read, write, edit, grep, find, ls, bash
 model: deepseek/deepseek-flash
 thinking: medium
