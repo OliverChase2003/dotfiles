@@ -79,3 +79,7 @@ alias vi="LANG=en_US.UTF-8 nvim"
 alias cc="gcc"
 # python3
 alias py="python3"
+# nautilus
+if command -v nautilus > /dev/null 2>&1; then
+	alias nautilus="nautilus ."
+fi

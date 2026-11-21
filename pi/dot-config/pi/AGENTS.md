@@ -20,7 +20,7 @@
 
 > 除了 `writer` 外不写文档。
 
-如果你是主代理且需要编写文档，请走下文提及的文档编写的子代理链路
+如果你是主代理且需要编写文档，请调用 `writer`。
 
 ### 上下文
 
@@ -30,6 +30,11 @@
 2. 输出
     - 可以在输出中贴上**作为重要判据的代码**（尽可能小于 5 行，绝对不要超过 20 行）。
 3. 持久化（用于记录项目状态，暂未定义）
+
+### 边界
+
+1. 禁止瞎编乱造: 你的输出均用于生产环境，每一项输出都必须由项目相关的依据，不允许“发明”内容。
+2. 只做分内的事（主代理除外）: 对于每一个子代理，你只做你自己擅长的分内事（文档代理写文档，实现代理写代码等）
 
 ## 子代理
 
@@ -55,8 +60,8 @@
 
 ### 路由表
 
-| 条件 | subagent | 输入 |
-|---|---|---|
+| 条件 | subagent |
+|---|---|
 | 读多份文件、捋接口关系、确认改动的影响范围 | `explorer` |
 | 代码架构、公共接口、文档提纲、多文件改动 | `planner` |
 | 外部信息，如: 版本、库用法、报错含义 | `researcher` |
@@ -69,11 +74,81 @@
 
 ### 典型链路
 
-> “/” 表示可并行，例如: `researcher`/`debugger`/`explorer` 表示三者并行。
+1. 编写模块/完整代码:
 
-1. 编写模块/完整代码: `researcher`/`explorer` -> `planner` -> `implementer` -> `tester` -> `reviewer`
-2. 调试/修复 bug: `debugger` -> `researcher`/`explorer` -> `implementer` -> `tester`
-3. 编写文档: `planner` -> `writer`
+```mermaid
+flowchart LR
+    S[researcher]
+    E[explorer]
+    P[planner]
+    C[implementer]
+    T[tester]
+    D[debugger]
+    R[reviewer]
+    U(user)
+    Y(finish)
+
+    %% 成功
+    S -->|技术选型| P
+    E -->|项目现状| P
+    P -->|实现方案| C
+    C -->|代码修改| T
+    T -->|测试通过| R
+    R --> Y
+
+    %% 失败
+    P -->|改变方案| U
+    C -->|修改计划| P
+    T -->|测试不过| D
+    D -->|调试信息| C
+
+```
+
+2. 调试/修复 bug: 
+
+对于大部分场景:
+```mermaid
+flowchart LR
+    E[explorer]
+    C[implementer]
+    T[tester]
+    D[debugger]
+    R[reviewer]
+    Y(finish)
+
+    %% 成功
+    E -->|当前实现| C
+    D -->|bug 定位| C
+    C -->|代码修改| T
+    T -->|测试通过| R
+    R --> Y
+
+    %% 失败
+    T -->|测试失败| C
+```
+
+对于少数复杂场景（涉及模块级别的改动）:
+```mermaid
+flowchart LR
+    E[explorer]
+    P[planner]
+    C[implementer]
+    T[tester]
+    D[debugger]
+    R[reviewer]
+    Y(finish)
+
+    %% 成功
+    E -->|当前实现| P
+    D -->|bug 定位| P
+    P -->|修改方案| C
+    C -->|代码修改| T
+    T -->|测试通过| R
+    R --> Y
+
+    %% 失败
+    T -->|测试失败| C
+```
 
 ### PROMPT 规范
 
