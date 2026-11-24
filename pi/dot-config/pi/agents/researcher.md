@@ -2,7 +2,7 @@
 description: 联网调研：查外部资料、给带出处的结论；用于需要当前外部信息的问题
 display_name: Researcher
 tools: web_search, source_check, fetch_content, get_search_content, read, grep, find, ls, bash
-model: deepseek/deepseek-v4-pro
+model: deepseek/deepseek-flash
 thinking: high
 max_turns: 30
 prompt_mode: replace

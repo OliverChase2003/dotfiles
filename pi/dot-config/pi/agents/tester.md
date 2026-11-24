@@ -1,6 +1,6 @@
 ---
 description: 跑测试并如实报告结果；项目没有测试时立即返回。只跑不改
-display_name: Test Runner
+display_name: Tester
 tools: read, bash, grep, find, ls
 model: deepseek/deepseek-flash
 thinking: high
