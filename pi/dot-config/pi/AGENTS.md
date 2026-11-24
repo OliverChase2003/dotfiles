@@ -65,17 +65,19 @@
 
 ### 路由表
 
-| 条件 | subagent |
-|---|---|
-| 读多份文件、捋接口关系、确认改动的影响范围 | `explorer` |
-| 代码架构、公共接口、文档提纲、多文件改动 | `planner` |
-| 外部信息，如: 版本、库用法、报错含义 | `researcher` |
-| 对已有方案编写代码、编写测试用例 | `implementer` |
-| 出现 bug，需要调试查找原因 | `debugger` |
-| 代码更改后的测试 | `tester` |
-| 提交前的代码审计 | `reviewer` |
-| 编写或更新文档 | `writer` |
-| 以上都不适用 | `general-purpose` |
+| 条件 | subagent | 模型 | 思考 |
+|---|---|---|---|
+| 读多份文件、捋接口关系、确认改动的影响范围 | `explorer` | `deepseek/deepseek-flash` | `high` |
+| 代码架构、公共接口、文档提纲、多文件改动 | `planner` | `openai/gpt-6.2-sol` | `high` |
+| 外部信息，如: 版本、库用法、报错含义 | `researcher` | `deepseek/deepseek-flash` | `high` |
+| 对已有方案编写代码、编写测试用例 | `implementer` | `openai/gpt-6.2-sol` | `high` |
+| 出现 bug，需要调试查找原因 | `debugger` | `openai/gpt-6.2-sol` | `high` |
+| 代码更改后的测试 | `tester` | `deepseek/deepseek-flash` | `high` |
+| 提交前的代码审计 | `reviewer` | `openai/gpt-6.2-sol` | `high` |
+| 编写或更新文档 | `writer` | `deepseek/deepseek-flash` | `high` |
+| 以上都不适用 | `general-purpose` | `openai/gpt-6.2-sol` | `high` |
+
+> 模型由主代理在每次派出时按上表选择，并通过 `subagent` 的 `model` 参数显式传入，
 
 ### 典型链路
 

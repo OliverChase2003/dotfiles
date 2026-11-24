@@ -2,7 +2,6 @@
 description: 实现代码和测试
 display_name: Implementer
 tools: read, edit, write, bash, grep, find, ls
-model: deepseek/deepseek-flash
 thinking: high
 max_turns: 60
 prompt_mode: replace

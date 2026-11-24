@@ -2,3 +2,4 @@
 --no-folding
 --target=~
 --restow
+--ignore=^[.]config/pi/settings-shared[.]json$
