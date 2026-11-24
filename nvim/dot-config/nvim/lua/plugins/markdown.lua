@@ -1,6 +1,13 @@
+local render_makrdown_status = true
+
 local render_markdown_opt = {
 	file_types = { 'markdown', 'vimwiki', 'norg', 'typst' },
-	-- anti_conceal = { enabled = true },
+	-- 不在光标行隐藏已渲染内容（图标/边框/竖线等），光标行也保持预览
+	-- anti_conceal = { enabled = false },
+	-- 渲染时让光标行也参与 conceal（默认 rendered = ''，即光标行显示原始语法）
+	win_options = {
+		concealcursor = { rendered = 'n' },
+	},
 	completions = {
 		lsp = { enabled = true },
 		blink = { enabled = true }
@@ -44,7 +51,7 @@ local render_markdown_opt = {
 	},
 	-- table
 	pipe_table = {
-		preset = 'round'
+		preset = 'none',	-- 'round' 'none'
 	},
 	-- quotes
 	quote = {
@@ -109,7 +116,26 @@ local function vimpack_setup_render_markdown()
 		end,
 	})
 
-	vim.keymap.set('n', '<leader>md', '<CMD>RenderMarkdown toggle<CR>', { desc = 'Toggle render markdown' })
+	vim.api.nvim_create_autocmd("InsertEnter", {
+		pattern = { "markdown", "vimwiki", "norg", "typst" },
+		callback = function()
+			render_makrdown_status = require('render-markdown.state').get(0).enabled
+			vim.cmd("RenderMarkdown disable")
+		end,
+	})
+
+	vim.api.nvim_create_autocmd("InsertLeave", {
+		pattern = { "markdown", "vimwiki", "norg", "typst" },
+		callback = function()
+			if render_makrdown_status == true then
+				vim.cmd("RenderMarkdown enable")
+			end
+		end,
+	})
+
+	vim.keymap.set('n', '<leader>md', function()
+		vim.cmd("RenderMarkdown toggle")
+	end, { desc = 'Toggle render markdown' })
 end
 
 local function lazy_setup_render_markdown()
