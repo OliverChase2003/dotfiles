@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "1.5.2",
+  "lastChangelogVersion": "1.6.0",
   "theme": "system",
   "externalEditor": "nvim",
   "packages": [
@@ -14,7 +14,7 @@
   "defaultModel": "deepseek-flash",
   "extensionChangelogVersions": {
     "{\"source\":\"npm:@gotgenes/pi-subagents\",\"scope\":\"user\"}": "25.0.5",
-    "{\"source\":\"npm:@gotgenes/pi-permission-system\",\"scope\":\"user\"}": "42.0.0",
-    "{\"source\":\"npm:pi-web-access\",\"scope\":\"user\"}": "0.47.0"
+    "{\"source\":\"npm:@gotgenes/pi-permission-system\",\"scope\":\"user\"}": "42.2.1",
+    "{\"source\":\"npm:pi-web-access\",\"scope\":\"user\"}": "0.48.0"
   }
 }
