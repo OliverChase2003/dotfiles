@@ -1,0 +1,21 @@
+{
+  "lastChangelogVersion": "1.6.0",
+  "theme": "system",
+  "externalEditor": "nvim",
+  "packages": [
+    "npm:@gotgenes/pi-subagents",
+    "npm:@gotgenes/pi-permission-system",
+    "npm:pi-web-access",
+    "npm:pi-vim"
+  ],
+  "enableSkillCommands": false,
+  "hideThinkingBlock": true,
+  "defaultProvider": "openai",
+  "defaultModel": "gpt-6.2-sol",
+  "defaultThinkingLevel": "high",
+  "enabledModels": [
+    "openai/gpt*sol",
+    "openai/gpt*astra",
+    "deepseek/deepseek-flash"
+  ]
+}

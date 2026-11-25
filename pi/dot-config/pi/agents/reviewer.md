@@ -2,7 +2,6 @@
 description: 审查改动：只看 diff、按严重度报告、不改代码
 display_name: Reviewer
 tools: read, grep, find, ls, bash
-model: deepseek/deepseek-flash
 thinking: high
 max_turns: 30
 prompt_mode: replace

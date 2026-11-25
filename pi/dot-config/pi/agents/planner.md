@@ -2,7 +2,6 @@
 description: 根据目标、现状、技术选型提出软件解决方案
 display_name: Planner
 tools: read, grep, find, ls, bash
-model: deepseek/deepseek-v4-pro
 thinking: high
 max_turns: 40
 prompt_mode: replace

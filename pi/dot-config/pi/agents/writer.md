@@ -2,7 +2,6 @@
 description: 编写文档
 display_name: Writer
 tools: read, write, edit, grep, find, ls, bash
-model: deepseek/deepseek-flash
 thinking: medium
 max_turns: 30
 prompt_mode: replace

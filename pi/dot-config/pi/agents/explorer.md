@@ -2,7 +2,6 @@
 description: 快速定位代码
 display_name: Explorer
 tools: read, grep, find, ls, bash
-model: deepseek/deepseek-flash
 thinking: high
 max_turns: 25
 prompt_mode: replace

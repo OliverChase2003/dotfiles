@@ -2,7 +2,6 @@
 description: 排错：失败现象定位根因并最小修复；先复现、不猜、不打补丁
 display_name: Debugger
 tools: read, edit, write, bash, grep, find, ls
-model: deepseek/deepseek-v4-pro
 thinking: high
 max_turns: 50
 prompt_mode: replace
