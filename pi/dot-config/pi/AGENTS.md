@@ -77,7 +77,8 @@
 | 编写或更新文档 | `writer` | `deepseek/deepseek-flash` | `high` |
 | 以上都不适用 | `general-purpose` | `openai/gpt-6.2-sol` | `high` |
 
-> 模型由主代理在每次派出时按上表选择，并通过 `subagent` 的 `model` 参数显式传入，
+
+> **模型**和**思考等级**由主代理在每次派出时按上表选择，并通过 `subagent` 的 `model` 参数显式传入，
 
 ### 典型链路
 

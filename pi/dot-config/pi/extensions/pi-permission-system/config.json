@@ -6,7 +6,8 @@
 		},
 		"external_directory_write": {
 			"*": "ask",
-			"/tmp": "allow"
+			"/tmp": "allow",
+			"/tmp/*": "allow"
 		},
 		"read": "allow",
 		"grep": "allow",
